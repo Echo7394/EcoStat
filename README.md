@@ -6,13 +6,13 @@ Energy saving features are included while not requiring you to sacrifice normal 
 
 Parts required:
 
-**-Seeed Studio Xiao ESP32C3 or other similarly sized ESP32C3 board
+**-Seeed Studio Xiao ESP32C3 or other similarly sized ESP32C3 board**
 
-  -Two 5V One Channel Relay Module, I used "HiLetgo 2pcs 5V One Channel Relay Module Relay Switch with OPTO Isolation High Low Level Trigger" from Amazon
+**-Two 5V One Channel Relay Module, I used "HiLetgo 2pcs 5V One Channel Relay Module Relay Switch with OPTO Isolation High Low Level Trigger" from Amazon**
   
-  -A DHT22 Sensor, I used a "Gowoops 2pcs DHT22/AM2302 Digital Humidity and Temperature Sensor Module" from Amazon
+**-A DHT22 Sensor, I used a "Gowoops 2pcs DHT22/AM2302 Digital Humidity and Temperature Sensor Module" from Amazon**
   
-  -Micro Momentary Button, I used a 4 pin type, you can use anything that fits the mounting hole (6mm or less).**
+**-Micro Momentary Button, I used a 4 pin type, you can use anything that fits the mounting hole (6mm or less).**
   
    I also used beads as the buttons themselves for the momentary switches just because the actual button pieces were not long enough, get creative.
    
