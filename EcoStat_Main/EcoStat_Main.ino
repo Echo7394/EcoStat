@@ -89,8 +89,8 @@ void setup() {
   }
     float temperatureC = dht.readTemperature();
     float temperatureF = celsiusToFahrenheit(temperatureC);
-    String heatingStatus = heatingOn ? "Heating On" : "Heating Off"; // Determine the state of heatingOn and assign it to heating Status with a variable string
-    String fanStatus = fanisOn ? "Fan On" : "Fan Off";
+    String heatingStatus = heatingOn ? "On" : "Off"; // Determine the state of heatingOn and assign it to heating Status with a variable string
+    String fanStatus = fanisOn ? "On" : "Off";
 
  String html = "<html><body style='text-align: center;font-size: 24px;background-color: #000;color: #00FFD3;'>";
   html += "<head>";
@@ -99,8 +99,8 @@ void setup() {
   html += "<h1 style='color: #00FFD3;text-shadow: -3px 3px 5px #5C5C5C;'>EcoNet Control</h1>";
   html += "<p>Current Temperature: <strong id='currentTemp'>" + String(temperatureF, 1) + " F</strong></p>";
   html += "<p>Target Temperature: <strong><span id='tempSet'>" + String(tempSet) + "</span> F</strong></p>";
-  html += "<p>Heating Status: <strong id='heatingStatus'>" + heatingStatus + "</strong></p>"; // Display heating status
-  html += "<p>Fan Status: <strong id='fanStatus'>" + fanStatus + "</strong></p>"; // Display fan status
+  html += "<p>Heating: <strong id='heatingStatus'>" + heatingStatus + "</strong></p>"; // Display heating status
+  html += "<p>Fan: <strong id='fanStatus'>" + fanStatus + "</strong></p>"; // Display fan status
   html += "<p><button onclick='increaseTemp()'>Temp +</button></p>";
   html += "<p><button onclick='decreaseTemp()'>Temp -</button></p>";
   html += "<p><button onclick='fanOn()'>Fan On</button></p>";
