@@ -30,6 +30,8 @@ IPAddress subnet(255, 255, 255, 0);
 AsyncWebServer server(80);
 
 int tempSet = 60; // Initial target temperature in degrees Fahrenheit
+const char* http_username = "your_username"; // Change to your desired username
+const char* http_password = "your_password"; // Change to your desired password
 
 unsigned long lastDebounceTime = 0;
 unsigned long debounceDelay = 1000;
@@ -84,6 +86,9 @@ void setup() {
 
   // Serve a webpage to control temperature
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+  if (!request->authenticate(http_username, http_password)) {
+    return request->requestAuthentication();
+  }
     float temperatureC = dht.readTemperature();
     float temperatureF = celsiusToFahrenheit(temperatureC);
 
