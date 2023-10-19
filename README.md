@@ -2,10 +2,9 @@
 Seeduino ESP32C3 Smart Thermostat, but simple, and intuitive. Includes internet access to all functions, but does not spy on you, bloat the mcu with unneccesary code or gather any kind of pointless telemetry whatsover.
 Energy saving features are included while not requiring you to sacrifice normal functionality.
 
-<div class="row" style="display: flex;flex-wrap: wrap;padding: 0 4px;">
-  <div class="column" style="flex: 50%;padding: 0 4px;">
-<img style="margin-top: 8px;
-  vertical-align: middle;" src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
+<div class="row">
+  <div class="column">
+<img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
   </div>
   <div class="column">
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231014_162400.jpg" width="200" />
