@@ -21,8 +21,8 @@ DHT dht(DHT_PIN, DHT22);
 #define RELAY_PIN 10
 #define RELAY_PIN1 20
 
-const char* ssid = "Spires";
-const char* password = "Spires54646";
+const char* ssid = "WiFiSSIDHere";
+const char* password = "WiFiPassHere";
 IPAddress localIP(192, 168, 0, 201);
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
