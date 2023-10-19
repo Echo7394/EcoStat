@@ -17,12 +17,14 @@ Parts required:
 **-Micro Momentary Button, I used a 4 pin type, you can use anything that fits the mounting hole (6mm or less).**
   
    I also used beads as the buttons themselves for the momentary switches just because the actual button pieces were not long enough, get creative.
-   
+
+
+The screen displays Temperature, Humidity, MCU Temp, and Wifi Signal Strength.
+Buttons toggle temperature up & down by one degree at a time.
+The "Heat" relay does not trigger until the target temperature is 2 degrees less than the current temperature to prevent excessive toggling and save energy / gas / LP.
+The web page also provides the option to trigger the "fan" relay seperately for air circulation without climate control.
 <p float="left">
-  <figure>
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
-     <figcaption>Screen Displays, Temp, Humidity, MCU Temp, and WiFi Signal Strength.</figcaption>
-  </figure>
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231014_162400.jpg" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/Screenshot%20from%202023-10-15%2016-58-46.png" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/Case_Models/microstat.png" width="200" />
