@@ -148,22 +148,34 @@ void setup() {
   });
 
   server.on("/increase", HTTP_GET, [](AsyncWebServerRequest *request) {
+	  if (!request->authenticate(http_username, http_password)) {
+    return request->requestAuthentication();
+  }
     tempSet += 1.0; // Increase the target temperature by 1 degree
     request->send(200, "text/plain", "Increased target temperature by 1 degree.");
   });
 
   server.on("/decrease", HTTP_GET, [](AsyncWebServerRequest *request) {
+	  if (!request->authenticate(http_username, http_password)) {
+    return request->requestAuthentication();
+  }
     tempSet -= 1.0; // Decrease the target temperature by 1 degree
     request->send(200, "text/plain", "Decreased target temperature by 1 degree.");
   });
 
   server.on("/fanOn", HTTP_GET, [](AsyncWebServerRequest *request) {
+	  if (!request->authenticate(http_username, http_password)) {
+    return request->requestAuthentication();
+  }
   digitalWrite(RELAY_PIN1, HIGH); // Turn on the fan relay
   fanisOn = true;
   request->send(200, "text/plain", "Fan is turned on.");
 });
 
   server.on("/fanOff", HTTP_GET, [](AsyncWebServerRequest *request) {
+	  if (!request->authenticate(http_username, http_password)) {
+    return request->requestAuthentication();
+  }
   digitalWrite(RELAY_PIN1, LOW); // Turn off the fan relay
   fanisOn = false;
   request->send(200, "text/plain", "Fan is turned off.");
