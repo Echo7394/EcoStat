@@ -3,5 +3,6 @@ Seeduino ESP32C3 Smart Thermostat, but simple, and intuitive. Includes internet 
 Energy saving features are included while not requiring you to sacrifice normal functionality.
 
 ![alt text](https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg)
+![alt text](https://github.com/Echo7394/EcoStat/blob/main/img/20231014_162400.jpg)
 
 **Currently a work in progress. A/C control will be added soon, however since its fall, and cold outside, I havent made it that far yet.**
