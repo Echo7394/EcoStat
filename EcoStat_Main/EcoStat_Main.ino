@@ -37,9 +37,7 @@ unsigned long lastDebounceTime = 0;
 unsigned long debounceDelay = 1000;
 
 bool heatingOn = false; // heating status, starts as false since RELAY_PIN typically starts LOW
-String heatingStatus = heatingOn ? "Heating On" : "Heating Off"; // Determine the heating status text
 bool fanisOn = false;
-String fanStatus = fanisOn ? "Fan On" : "Fan Off";
 
 float celsiusToFahrenheit(float celsius) { //Converts Celsius to Fahrenheit
   return (celsius * 9.0 / 5.0) + 32.0;
@@ -91,6 +89,8 @@ void setup() {
   }
     float temperatureC = dht.readTemperature();
     float temperatureF = celsiusToFahrenheit(temperatureC);
+    String heatingStatus = heatingOn ? "Heating On" : "Heating Off"; // Determine the state of heatingOn and assign it to heating Status with a variable string
+    String fanStatus = fanisOn ? "Fan On" : "Fan Off";
 
  String html = "<html><body style='text-align: center;font-size: 24px;background-color: #000;color: #00FFD3;'>";
   html += "<head>";
@@ -100,7 +100,7 @@ void setup() {
   html += "<p>Current Temperature: <strong id='currentTemp'>" + String(temperatureF, 1) + " F</strong></p>";
   html += "<p>Target Temperature: <strong><span id='tempSet'>" + String(tempSet) + "</span> F</strong></p>";
   html += "<p>Heating Status: <strong id='heatingStatus'>" + heatingStatus + "</strong></p>"; // Display heating status
-  html += "<p>Heating Status: <strong id='fanStatus'>" + fanStatus + "</strong></p>"; // Display fan status
+  html += "<p>Fan Status: <strong id='fanStatus'>" + fanStatus + "</strong></p>"; // Display fan status
   html += "<p><button onclick='increaseTemp()'>Temp +</button></p>";
   html += "<p><button onclick='decreaseTemp()'>Temp -</button></p>";
   html += "<p><button onclick='fanOn()'>Fan On</button></p>";
@@ -159,11 +159,13 @@ void setup() {
 
   server.on("/fanOn", HTTP_GET, [](AsyncWebServerRequest *request) {
   digitalWrite(RELAY_PIN1, HIGH); // Turn on the fan relay
+  fanisOn = true;
   request->send(200, "text/plain", "Fan is turned on.");
 });
 
   server.on("/fanOff", HTTP_GET, [](AsyncWebServerRequest *request) {
   digitalWrite(RELAY_PIN1, LOW); // Turn off the fan relay
+  fanisOn = false;
   request->send(200, "text/plain", "Fan is turned off.");
 });
   server.begin();
