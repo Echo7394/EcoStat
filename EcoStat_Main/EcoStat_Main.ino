@@ -21,8 +21,8 @@ DHT dht(DHT_PIN, DHT22);
 #define RELAY_PIN 10
 #define RELAY_PIN1 20
 
-const char* ssid = "WiFiSSIDHere";
-const char* password = "WiFiPassHere";
+const char* ssid = "your_SSID";
+const char* password = "your_SSID_Password";
 IPAddress localIP(192, 168, 0, 201);
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
@@ -30,8 +30,8 @@ IPAddress subnet(255, 255, 255, 0);
 AsyncWebServer server(80);
 
 int tempSet = 60; // Initial target temperature in degrees Fahrenheit
-const char* http_username = "your_username"; // Change to your desired username
-const char* http_password = "your_password"; // Change to your desired password
+const char* http_username = "yourusername"; // Change to your desired username
+const char* http_password = "yourpassword"; // Change to your desired password
 
 unsigned long lastDebounceTime = 0;
 unsigned long debounceDelay = 1000;
