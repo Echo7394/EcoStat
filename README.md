@@ -22,7 +22,7 @@ Parts required:
 The screen displays Temperature, Humidity, MCU Temp, and Wifi Signal Strength.
 Buttons toggle temperature up & down by one degree at a time.
 The "Heat" relay does not trigger until the target temperature is 2 degrees less than the current temperature to prevent excessive toggling and save energy / gas / LP.
-The web page also provides the option to trigger the "fan" relay seperately for air circulation without climate control.
+The web page also provides the option to trigger the "Fan" relay seperately for air circulation without climate control.
 <p float="left">
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231014_162400.jpg" width="200" />
