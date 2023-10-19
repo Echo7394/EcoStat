@@ -26,7 +26,7 @@ The web page also provides the option to trigger the "Fan" relay seperately for 
 <p float="left">
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231014_162400.jpg" width="200" />
-<img src="https://github.com/Echo7394/EcoStat/blob/main/img/Screenshot%20from%202023-10-15%2016-58-46.png" width="200" />
+<img src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/EcoNet.png" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/Case_Models/microstat.png" width="200" />
 </p>
 
