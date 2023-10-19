@@ -16,11 +16,11 @@ Parts required:
   
    I also used beads as the buttons themselves for the momentary switches just because the actual button pieces were not long enough, get creative.
    
-<p float="left">
+<p float="left"><center>
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231014_162400.jpg" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/Screenshot%20from%202023-10-15%2016-58-46.png" width="200" />
-</p>
+</p></center>
 
 **Currently a work in progress. A/C control will be added soon, however since its fall, and cold outside, I havent made it that far yet.**
 
