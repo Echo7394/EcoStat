@@ -1,7 +1,7 @@
  <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="[style.css](https://github.com/Echo7394/EcoStat/blob/main/style.css)">
+<link rel="stylesheet" href="https://github.com/Echo7394/EcoStat/blob/main/style.css">
 </head>
 <body>
   
