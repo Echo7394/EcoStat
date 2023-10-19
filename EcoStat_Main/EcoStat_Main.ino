@@ -12,55 +12,55 @@
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-#define DHT_PIN 8 
+#define DHT_PIN 8    // Settings the data pin for the DHT22
 DHT dht(DHT_PIN, DHT22);
 
-#define BUTTON_PIN0 2 // Button to raise tempSet
-#define BUTTON_PIN1 3 // Button to lower tempSet
+#define BUTTON_PIN0 3 // Button to lower tempSet
+#define BUTTON_PIN1 2 // Button to raise tempSet
 
-#define RELAY_PIN 10
-#define RELAY_PIN1 20
+#define RELAY_PIN 10 // Establishing the trigger pin for the "Heat" relay
+#define RELAY_PIN1 20 // "Fan" Relay trigger pin
 
-const char* ssid = "your_SSID";
-const char* password = "your_SSID_Password";
+const char* ssid = "your_SSID";				 // Change to desired Wi-Fi SSID
+const char* password = "your_SSID_Password"; // Change to desired Wi-Fi Password
 IPAddress localIP(192, 168, 0, 201);
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
 
-AsyncWebServer server(80);
+AsyncWebServer server(80); // Web server to port 80 TCP
 
 int tempSet = 60; // Initial target temperature in degrees Fahrenheit
 const char* http_username = "yourusername"; // Change to your desired username
 const char* http_password = "yourpassword"; // Change to your desired password
 
-unsigned long lastDebounceTime = 0;
-unsigned long debounceDelay = 1000;
+unsigned long lastDebounceTime = 0; // Momentary switches like to be bouncy
+unsigned long debounceDelay = 1000; // These variables will take care of that later
 
 bool heatingOn = false; // heating status, starts as false since RELAY_PIN typically starts LOW
-bool fanisOn = false;
+bool fanisOn = false; // same as above but for.... the fan relay
 
 float celsiusToFahrenheit(float celsius) { //Converts Celsius to Fahrenheit
   return (celsius * 9.0 / 5.0) + 32.0;
 }
 
-void displayTempSet(int tempSet) {
-  display.clearDisplay();
+void displayTempSet(int tempSet) { // This function gets flashed briefly on the OLED
+  display.clearDisplay();          // when the target temp "tempSet" is changed
   display.setTextSize(2);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(0, 20);
   display.print(F("Target: "));
-  display.print(tempSet); // Display one decimal place
+  display.print(tempSet);
   display.display();
 }
 
 void setup() {
- // Serial.begin(115200);
+ // Serial.begin(115200);      // uncomment this if you need serial output for debugging
   pinMode(RELAY_PIN, OUTPUT); 
   pinMode(RELAY_PIN1, OUTPUT);
   digitalWrite(RELAY_PIN, LOW); // Ensure the relay is initially off
   digitalWrite(RELAY_PIN1, LOW);
-  pinMode(BUTTON_PIN0, INPUT_PULLUP); // Gotta use le pullup for buttons because reasons
-  pinMode(BUTTON_PIN1, INPUT_PULLUP); // Makin buttons inputs to make it cooler!
+  pinMode(BUTTON_PIN0, INPUT_PULLUP); // Gotta use a pullup for buttons because otherwise
+  pinMode(BUTTON_PIN1, INPUT_PULLUP); // Erwins Cats are going to get involved
 
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
@@ -76,13 +76,12 @@ void setup() {
     for (;;);
   }
 
-  // Clear the display
-  display.clearDisplay();
-  display.display(); // Display the cleared screen
+  display.clearDisplay(); // This just ensures that we start with a clear display
+  display.display();      // on the SSD1306 screen
 
   dht.begin();
 
-  // Serve a webpage to control temperature
+  // Serve a webpage to control features remotely
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
   if (!request->authenticate(http_username, http_password)) {
     return request->requestAuthentication();
@@ -90,7 +89,7 @@ void setup() {
     float temperatureC = dht.readTemperature();
     float temperatureF = celsiusToFahrenheit(temperatureC);
     String heatingStatus = heatingOn ? "On" : "Off"; // Determine the state of heatingOn and assign it to heating Status with a variable string
-    String fanStatus = fanisOn ? "On" : "Off";
+    String fanStatus = fanisOn ? "On" : "Off";       // Same thing but you know... the fan
 
  String html = "<html><body style='text-align: center;font-size: 24px;background-color: #000;color: #00FFD3;'>";
   html += "<head>";
@@ -108,8 +107,8 @@ void setup() {
   html += "<style>";
   html += "button { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 24px; width: 50vw; }";
   html += "</style>";
-  html += "<script>";
-  html += "function increaseTemp() {";
+  html += "<script>";                                             // XML is foreign to me so ill be honest 
+  html += "function increaseTemp() {";                            // ChatGPT helped me with this part
   html += "  var xhr = new XMLHttpRequest();";
   html += "  xhr.open('GET', '/increase', true);";
   html += "  xhr.send();";
@@ -147,7 +146,7 @@ void setup() {
 
   });
 
-  server.on("/increase", HTTP_GET, [](AsyncWebServerRequest *request) {
+  server.on("/increase", HTTP_GET, [](AsyncWebServerRequest *request) { //comments comments so many comments....
 	  if (!request->authenticate(http_username, http_password)) {
     return request->requestAuthentication();
   }
@@ -187,7 +186,7 @@ void setup() {
 }
 
 void button0Pressed() {
-  if (millis() - lastDebounceTime > debounceDelay) {
+  if (millis() - lastDebounceTime > debounceDelay) { // Fancy debounce stuff to make sure a button press = just 1 press
     tempSet += 1; // Increase the target temperature by 1 degree
     lastDebounceTime = millis();
   }
@@ -202,23 +201,22 @@ void button1Pressed() {
 
 void loop() {
   static float previousTempSet = tempSet; // Store the previous value of tempSet
-  static unsigned long fanStartTime = 0; // Variable to store the time when the fan relay was turned on
-  int tempC = temperatureRead(); // read device temperature
+  static unsigned long fanStartTime = 0; // Variable to store the time when the fan relay was turned on, not currently used since i dont see a need for it yet.
+  int tempC = temperatureRead(); // read ESP32C3 device temperature for display later
 
   // Read temperature and humidity
   float temperatureC = dht.readTemperature();
-  float temperatureF = celsiusToFahrenheit(temperatureC);
+  float temperatureF = celsiusToFahrenheit(temperatureC); // converts C to F and assigns it to temperatureF because 'Merica
   float humidity = dht.readHumidity();
 
-  int rssi = WiFi.RSSI();
+  int rssi = WiFi.RSSI(); 								 // Comments are exhausting.... I think you can figure this one out.
   Serial.print("Wi-Fi Signal Strength (RSSI): ");
   Serial.print(rssi);
   Serial.println(" dBm");
 
   // Check if any reads failed
-  if (!isnan(temperatureC) && !isnan(humidity)) {
-    // Display the temperature in Fahrenheit on the OLED screen
-    display.clearDisplay();
+  if (!isnan(temperatureC) && !isnan(humidity)) {  // Display the temperature in Fahrenheit on the OLED screen
+    display.clearDisplay(); // Clear the OLED first in case anything was left behind
     display.setTextSize(2);
     display.setTextColor(SSD1306_WHITE);
     display.setCursor(0, 0);
@@ -236,7 +234,7 @@ void loop() {
     display.print(F("RSSI: "));
     display.print(rssi);
     display.print(F("dBm"));
-    display.display();
+    display.display(); // Show that sweet sweet information on the OLED
 
     unsigned long lastFurnaceOffTime = 0; // Store the last time the furnace was turned off
     unsigned long furnaceDelay = 120000;    // Delay before turning the furnace back on (60,000 ms = 60 seconds)
@@ -245,18 +243,19 @@ void loop() {
     if (temperatureF < (tempSet - 2)) {
       // Check if the furnace has been off for the delay period
       if (millis() - lastFurnaceOffTime >= furnaceDelay) {
-        digitalWrite(RELAY_PIN, HIGH); // Turn on controlling relay
-        heatingOn = true;
+        digitalWrite(RELAY_PIN, HIGH); // Turn on heat controlling relay
+        heatingOn = true; // Setting the boolean heatingOn to true so other parts of the code know that RELAY_PIN is HIGH
+		  				  // is there an easier way to do this?? Absolutely, but i refuse
       }
     } else {
       if (temperatureF >= tempSet) {
-        digitalWrite(RELAY_PIN, LOW); // Turn off controlling relay
+        digitalWrite(RELAY_PIN, LOW); // Turn off heat controlling relay
         lastFurnaceOffTime = millis();  // Update the time when the furnace was turned off
-        heatingOn = false;
+        heatingOn = false; // Setting the boolean heatingOn to false so other parts of the code know that RELAY_PIN is LOW
       }
 
       // Check if tempSet has changed
-      if (temperatureF < (tempSet - 2) || tempSet != previousTempSet) {
+      if (temperatureF < (tempSet - 2) || tempSet != previousTempSet) { // Math is torture
         // Print target temperature to the serial monitor
         Serial.print(F("Target Temperature: "));
         Serial.print(tempSet, 1);
@@ -282,5 +281,4 @@ void loop() {
   }
 
   delay(2000); // Wait for 2 seconds before the next reading
-  unsigned long displayStartTime = millis(); // Get the current time
 }
