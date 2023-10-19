@@ -91,58 +91,58 @@ void setup() {
     String heatingStatus = heatingOn ? "On" : "Off"; // Determine the state of heatingOn and assign it to heating Status with a variable string
     String fanStatus = fanisOn ? "On" : "Off";       // Same thing but you know... the fan
 
- String html = "<html><body style='text-align: center;font-size: 24px;background-color: #000;color: #00FFD3;'>";
-  html += "<head>";
-  html += "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
-  html += "</head>";
-  html += "<h1 style='color: #00FFD3;text-shadow: -3px 3px 5px #5C5C5C;'>EcoNet Control</h1>";
-  html += "<p>Current Temperature: <strong id='currentTemp'>" + String(temperatureF, 1) + " F</strong></p>";
-  html += "<p>Target Temperature: <strong><span id='tempSet'>" + String(tempSet) + "</span> F</strong></p>";
-  html += "<p>Heating: <strong id='heatingStatus'>" + heatingStatus + "</strong></p>"; // Display heating status
-  html += "<p>Fan: <strong id='fanStatus'>" + fanStatus + "</strong></p>"; // Display fan status
-  html += "<p><button onclick='increaseTemp()'>Temp +</button></p>";
-  html += "<p><button onclick='decreaseTemp()'>Temp -</button></p>";
-  html += "<p><button onclick='fanOn()'>Fan On</button></p>";
-  html += "<p><button onclick='fanOff()'>Fan Off</button></p>";
-  html += "<style>";
-  html += "button { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 24px; width: 50vw; }";
-  html += "</style>";
-  html += "<script>";                                             // XML is foreign to me so ill be honest 
-  html += "function increaseTemp() {";                            // ChatGPT helped me with this part
-  html += "  var xhr = new XMLHttpRequest();";
-  html += "  xhr.open('GET', '/increase', true);";
-  html += "  xhr.send();";
-  html += "  xhr.onload = function () {";
-  html += "    if (xhr.status === 200) {";
-  html += "      var tempSetSpan = document.getElementById('tempSet');";
-  html += "      tempSetSpan.innerText = parseInt(tempSetSpan.innerText) + 1;";
-  html += "    }";
-  html += "  };";
-  html += "}";
-  html += "function decreaseTemp() {";
-  html += "  var xhr = new XMLHttpRequest();";
-  html += "  xhr.open('GET', '/decrease', true);";
-  html += "  xhr.send();";
-  html += "  xhr.onload = function () {";
-  html += "    if (xhr.status === 200) {";
-  html += "      var tempSetSpan = document.getElementById('tempSet');";
-  html += "      tempSetSpan.innerText = parseInt(tempSetSpan.innerText) - 1;";
-  html += "    }";
-  html += "  };";
-  html += "}";
-  html += "function fanOn() {";
-  html += "  var xhr = new XMLHttpRequest();";
-  html += "  xhr.open('GET', '/fanOn', true);";
-  html += "  xhr.send();";
-  html += "}";
-  html += "function fanOff() {";
-  html += "  var xhr = new XMLHttpRequest();";
-  html += "  xhr.open('GET', '/fanOff', true);";
-  html += "  xhr.send();";
-  html += "}";
-  html += "</script>";
-  html += "</body></html>";
-  request->send(200, "text/html", html);
+    String html = "<html><body style='text-align: center;font-size: 24px;background-color: #000;color: #00FFD3;'>";
+      html += "<head>";
+      html += "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
+      html += "</head>";
+      html += "<h1 style='color: #00FFD3;text-shadow: -3px 3px 5px #5C5C5C;'>EcoNet Control</h1>";
+      html += "<p>Current Temperature: <strong id='currentTemp'>" + String(temperatureF, 1) + " F</strong></p>";
+      html += "<p>Target Temperature: <strong><span id='tempSet'>" + String(tempSet) + "</span> F</strong></p>";
+      html += "<p>Heating: <strong id='heatingStatus'>" + heatingStatus + "</strong></p>"; // Display heating status
+      html += "<p>Fan: <strong id='fanStatus'>" + fanStatus + "</strong></p>"; // Display fan status
+      html += "<p><button onclick='increaseTemp()'>Temp +</button></p>";
+      html += "<p><button onclick='decreaseTemp()'>Temp -</button></p>";
+      html += "<p><button onclick='fanOn()'>Fan On</button></p>";
+      html += "<p><button onclick='fanOff()'>Fan Off</button></p>";
+      html += "<style>";
+      html += "button { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 24px; width: 50vw; }";
+      html += "</style>";
+      html += "<script>";                                             // XML is foreign to me so ill be honest 
+      html += "function increaseTemp() {";                            // ChatGPT helped me with this part
+      html += "  var xhr = new XMLHttpRequest();";
+      html += "  xhr.open('GET', '/increase', true);";
+      html += "  xhr.send();";
+      html += "  xhr.onload = function () {";
+      html += "    if (xhr.status === 200) {";
+      html += "      var tempSetSpan = document.getElementById('tempSet');";
+      html += "      tempSetSpan.innerText = parseInt(tempSetSpan.innerText) + 1;";
+      html += "    }";
+      html += "  };";
+      html += "}";
+      html += "function decreaseTemp() {";
+      html += "  var xhr = new XMLHttpRequest();";
+      html += "  xhr.open('GET', '/decrease', true);";
+      html += "  xhr.send();";
+      html += "  xhr.onload = function () {";
+      html += "    if (xhr.status === 200) {";
+      html += "      var tempSetSpan = document.getElementById('tempSet');";
+      html += "      tempSetSpan.innerText = parseInt(tempSetSpan.innerText) - 1;";
+      html += "    }";
+      html += "  };";
+      html += "}";
+      html += "function fanOn() {";
+      html += "  var xhr = new XMLHttpRequest();";
+      html += "  xhr.open('GET', '/fanOn', true);";
+      html += "  xhr.send();";
+      html += "}";
+      html += "function fanOff() {";
+      html += "  var xhr = new XMLHttpRequest();";
+      html += "  xhr.open('GET', '/fanOff', true);";
+      html += "  xhr.send();";
+      html += "}";
+      html += "</script>";
+      html += "</body></html>";
+      request->send(200, "text/html", html);
 
   });
 
