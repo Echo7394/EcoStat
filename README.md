@@ -27,9 +27,10 @@ Features:
   
 **-A DHT22 Sensor, I used a "Gowoops 2pcs DHT22/AM2302 Digital Humidity and Temperature Sensor Module" from Amazon**
   
-**-Micro Momentary Button, I used a 4 pin type, you can use anything that fits the mounting hole (6mm or less).**</p>
+**-Micro Momentary Button, I used a 4 pin type, you can use anything that fits the mounting hole (6mm or less).**
+</p>
 <p>
-**Software Dependencies:
+**Software Dependencies:**
 -DNSServer
 -ESPAsync_WiFiManager
 -Wire
@@ -37,7 +38,7 @@ Features:
 -Adafruit_SSD1306
 -esp_system
 -WiFi
--ESPAsyncWebServer**
+-ESPAsyncWebServer
 </p>
 <p>
 **Configuration:**
@@ -51,7 +52,7 @@ Button Controls
 BUTTON_FAN: Toggle the fan on and off.
 BUTTON_MODE: Switch between Heating, Cooling, and Off modes.
 BUTTON_PIN0 and BUTTON_PIN1: Increase and decrease the target temperature.
-
+</p>
 
 The screen displays Temperature, Humidity, MCU Temp, and Wifi Signal Strength.
 Buttons toggle temperature up & down by one degree at a time.
