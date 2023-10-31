@@ -18,6 +18,7 @@ Features:
 -Wi-Fi setup using a captive portal.
 
 **Hardware Requirements:**
+
 **-Seeed Studio Xiao ESP32C3**
 
 **-Any 128x64 SSD1306 I2C OLED Screen**
