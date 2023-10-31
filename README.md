@@ -29,7 +29,7 @@ Features:
   
 **-Micro Momentary Button, I used a 4 pin type, you can use anything that fits the mounting hole (6mm or less).**
 
-
+<hr>
   
 **Software Dependencies**
   
