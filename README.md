@@ -28,17 +28,26 @@ Features:
 **-A DHT22 Sensor, I used a "Gowoops 2pcs DHT22/AM2302 Digital Humidity and Temperature Sensor Module" from Amazon**
   
 **-Micro Momentary Button, I used a 4 pin type, you can use anything that fits the mounting hole (6mm or less).**
-</p>
-<p>
-**Software Dependencies:**
--DNSServer
--ESPAsync_WiFiManager
--Wire
--DHT
--Adafruit_SSD1306
--esp_system
--WiFi
--ESPAsyncWebServer
+
+
+  
+**Software Dependencies**
+  
+**-DNSServer**
+
+**-ESPAsync_WiFiManager**
+
+**-Wire**
+
+**-DHT**
+
+**-Adafruit_SSD1306**
+
+**-esp_system**
+
+**-WiFi**
+
+**-ESPAsyncWebServer**
 </p>
 <p>
 **Configuration:**
