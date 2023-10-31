@@ -1,7 +1,7 @@
 
   
 # EcoStat
-EcoStat is an open-source thermostat control system built using the ESP32C3 microcontroller.
+EcoStat is an open-source thermostat control system built using the Seed Studio Xiao ESP32C3 microcontroller.
 It allows you to control heating, cooling, and fan systems using physical buttons and a web-based interface. 
 Additionally, it displays temperature and humidity information on an OLED screen. The goal of this project was
 to create a cheap, energy saving, open source smart thermostat that doesnt spy on you. So, finally and most 
