@@ -4,9 +4,9 @@
 ░▀▀▀░▀▀▀░▀▀▀░▀▀▀░░▀░░▀░▀░░▀░                                                          
 GNU GENERAL PUBLIC LICENSE V3.0                                                       
 Made by Echo7394                                                                      
-                                                                                      
-Added variables for mode button, and a cooling relay, not implemented yet.           
 **************************************************************************************/
+#include <DNSServer.h>
+#include <ESPAsync_WiFiManager.h>
 #include <Wire.h>
 #include <DHT.h>
 #include <Adafruit_SSD1306.h>
@@ -33,11 +33,12 @@ DHT dht(DHT_PIN, DHT22);
 #define RELAY_PIN0 9 // trigger pin for "Cooling" relay
 #define RELAY_PIN1 20 // trigger pin for "Fan" relay
 
-const char* ssid = "your_SSID";				 // Change to desired Wi-Fi SSID
-const char* password = "your_SSID_Password"; // Change to desired Wi-Fi Password
-IPAddress localIP(192, 168, 0, 201);
-IPAddress gateway(192, 168, 0, 1);
-IPAddress subnet(255, 255, 255, 0);
+char ssid[32] = ""; // Will store the Wi-Fi SSID from the captive portal
+char password[64] = ""; // Will store the Wi-Fi password
+
+//IPAddress localIP(192, 168, 0, 201); //Uncomment to set a Static IP for EcoStat
+//IPAddress gateway(192, 168, 0, 1);
+//IPAddress subnet(255, 255, 255, 0);
 
 AsyncWebServer server(80); // Web server to port 80 TCP
 
@@ -47,6 +48,7 @@ const char* http_password = "yourpassword"; // Change to your desired password
 
 unsigned long lastDebounceTime = 0; // Momentary switches like to be bouncy
 unsigned long debounceDelay = 1000; // These variables will take care of that later
+unsigned long modeStatusLastUpdated = 0; // will be used for timing of displayModeStatus
 
 bool heatingOn = false; // heating status, starts as false since RELAY_PIN typically starts LOW
 bool coolingOn = false; // cooling status
@@ -56,11 +58,19 @@ float celsiusToFahrenheit(float celsius) { //Converts Celsius to Fahrenheit
   return (celsius * 9.0 / 5.0) + 32.0;
 }
 
+int mode = 0; // 0 for off, 1 for heating, 2 for cooling
+
+void changeMode() {
+  mode = (mode + 1) % 3; // Cycle through modes: 0 -> 1 -> 2 -> 0
+  // Turn off heating and cooling when switching modes
+  digitalWrite(RELAY_PIN, LOW); 
+  digitalWrite(RELAY_PIN0, LOW); 
+}
+
 void displayTempSet(int tempSet) { // This function gets flashed briefly on the OLED
   display.clearDisplay();          // when the target temp "tempSet" is changed
   display.setTextSize(2);
   display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0, 20);
   display.setCursor(0, 20);
   display.print(F("Target: "));
   display.print(tempSet);
@@ -80,24 +90,65 @@ void displayFanStatus() {    // Gets flashed to the OLED whenever fanisOn change
 	display.display();
 }
 
+void displayModeStatus(String modeStatus) { // Gets flashed to the OLED whenever modeStatus changes
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 20);
+  display.print(F("Mode: "));
+  display.print(modeStatus);
+  display.display();
+
+  // Record the time when modeStatus is updated for use later
+  modeStatusLastUpdated = millis();
+}
+
 void setup() {
- // Serial.begin(115200);      // uncomment this if you need serial output for debugging
-	
+  
+  delay(3000); // Delay because i've heard setup can get skipped sometimes
+			   // Do not know if thats true so this may not be neccessary
+//Serial.begin(115200);      // uncomment this if you need serial output for debugging
+  
   pinMode(RELAY_PIN, OUTPUT); 
+  pinMode(RELAY_PIN0, OUTPUT);	
   pinMode(RELAY_PIN1, OUTPUT); // Set Relay trigger pins as outputs, because they are.
   digitalWrite(RELAY_PIN, LOW); // Ensure the relay is initially off
+  digitalWrite(RELAY_PIN0, LOW);
   digitalWrite(RELAY_PIN1, LOW);
   pinMode(BUTTON_PIN0, INPUT_PULLUP); // Gotta use a pullup for buttons because otherwise
   pinMode(BUTTON_PIN1, INPUT_PULLUP); // Erwins Cats are going to get involved
   pinMode(BUTTON_FAN, INPUT_PULLUP);
 
+	
+  // Initialize Wi-Fi and display a notification to SSD1306 Screen
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 10);
+  display.print(F("Setup: Connect to Wi-Fi: EcoStat-Setup")); // display to SSD1306
+  display.display();
+  
+  WiFi.mode(WIFI_STA);
+  Serial.println("Waiting for WiFi credentials...");
+  ESPAsync_WiFiManager wifiManager(&server, NULL, "EcoStat-Setup");
+  wifiManager.autoConnect("EcoStat-Setup"); // Start a captive portal
+  strcpy(ssid, wifiManager.getConfigPortalSSID().c_str());
+  strcpy(password, wifiManager.getConfigPortalPW().c_str());
+
+	
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(3000);
     Serial.println("Connecting to WiFi...");
   }
   Serial.println("Connected to WiFi");
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 10);
+  display.print(F("Wi-Fi Connected!")); // display to SSD1306
+  display.display();
+  delay(3000);
 
   // Initialize the OLED screen
   if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
@@ -120,6 +171,8 @@ void setup() {
     float temperatureF = celsiusToFahrenheit(temperatureC);
     String heatingStatus = heatingOn ? "On" : "Off"; // Determine the state of heatingOn and assign it to heating Status with a variable string
     String fanStatus = fanisOn ? "On" : "Off";       // Same thing but you know... the fan
+	String coolingStatus = coolingOn ? "On" : "Off"; // yep
+
 
     String html = "<html><body style='text-align: center;font-size: 24px;background-color: #000;color: #00FFD3;'>";
       html += "<head>";
@@ -129,11 +182,14 @@ void setup() {
       html += "<p>Current Temperature: <strong id='currentTemp'>" + String(temperatureF, 1) + " F</strong></p>";
       html += "<p>Target Temperature: <strong><span id='tempSet'>" + String(tempSet) + "</span> F</strong></p>";
       html += "<p>Heating: <strong id='heatingStatus'>" + heatingStatus + "</strong></p>"; // Display heating status
+	  html += "<p>Cooling: <strong id='coolingStatus'>" + coolingStatus + "</strong></p>"; // Display cooling status
       html += "<p>Fan: <strong id='fanStatus'>" + fanStatus + "</strong></p>"; // Display fan status
+	  html += "<p>Mode: <strong id='modeStatus'>" + (String((mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling")))) + "</strong></p>";
       html += "<p><button onclick='increaseTemp()'>Temp +</button></p>";
       html += "<p><button onclick='decreaseTemp()'>Temp -</button></p>";
       html += "<p><button onclick='fanOn()'>Fan On</button></p>";
       html += "<p><button onclick='fanOff()'>Fan Off</button></p>";
+	  html += "<p><button onclick='changeMode()'>Switch Modes</button></p>";
       html += "<style>";
       html += "button { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 24px; width: 50vw; }";
       html += "</style>";
@@ -182,6 +238,17 @@ void setup() {
       html += "    }";
       html += "  };";
       html += "}";
+	  html += "function changeMode() {";
+      html += "  var xhr = new XMLHttpRequest();";
+      html += "  xhr.open('GET', '/changeMode', true);";
+      html += "  xhr.send();";
+      html += "  xhr.onload = function () {";
+      html += "    if (xhr.status === 200) {";
+      html += "      var modeStatus = document.getElementById('modeStatus');";
+      html += "      modeStatus.innerText = '" + (String((mode == 0 ? "Heating" : (mode == 1 ? "Cooling" : "Off")))) + "';";
+      html += "    }";
+      html += "  };";
+      html += "}";
       html += "</script>";
       html += "</body></html>";
       request->send(200, "text/html", html);
@@ -212,22 +279,36 @@ void setup() {
   request->send(200, "text/plain", "Fan is turned on.");
   displayFanStatus(); // Gets called everytime fanisOn changes throughout the code
 });
-
   server.on("/fanOff", HTTP_GET, [](AsyncWebServerRequest *request) {
 	  if (!request->authenticate(http_username, http_password)) {
     return request->requestAuthentication();
   }
-	  
   digitalWrite(RELAY_PIN1, LOW); // Turn off the fan relay
   fanisOn = false;
   request->send(200, "text/plain", "Fan is turned off.");
   displayFanStatus();
+});
+  server.on("/changeMode", HTTP_GET, [](AsyncWebServerRequest *request) {
+  if (!request->authenticate(http_username, http_password)) {
+    return request->requestAuthentication();
+  }
+  changeMode();
+  request->send(200, "text/plain", "Mode switched.");
+  displayModeStatus (String((mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling")))); // Update and display the new mode
 });
   server.begin();
 
   attachInterrupt(digitalPinToInterrupt(BUTTON_PIN0), button0Pressed, FALLING); // Interrupt to detect button press
   attachInterrupt(digitalPinToInterrupt(BUTTON_PIN1), button1Pressed, FALLING);
   attachInterrupt(digitalPinToInterrupt(BUTTON_FAN), buttonfanPressed, FALLING);
+  attachInterrupt(digitalPinToInterrupt(BUTTON_MODE), buttonmodePressed, FALLING);
+}
+// setup function for BUTTON_MODE to increment the value of changeMode
+void buttonmodePressed() {
+  if (millis() - lastDebounceTime > debounceDelay) {
+	  changeMode();
+	  lastDebounceTime = millis();
+  }
 }
 
 void button0Pressed() {
@@ -243,6 +324,7 @@ void button1Pressed() {
     lastDebounceTime = millis();
   }
 }
+
 void buttonfanPressed() {
   if (millis() - lastDebounceTime > debounceDelay) {
     if (fanisOn) {
@@ -296,47 +378,68 @@ void loop() {
 
     unsigned long lastFurnaceOffTime = 0; // Store the last time the furnace was turned off
     unsigned long furnaceDelay = 120000;    // Delay before turning the furnace back on (120,000 ms = 120 seconds)
+	unsigned long modeStatusLastUpdated = 0;
+	  
+ // Check if the mode status was updated and clear the display after 2 seconds
+  if (millis() - modeStatusLastUpdated < 2000) {
+    // Display the updated mode status
+	displayModeStatus (String((mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling")))); // Update and display the new mode
+    display.display();
+  } else {
+    // Clear the display after 2 seconds
+    display.clearDisplay();
+  }
 
-    // Control the relay based on the target temperature (tempSet)
-    if (temperatureF < (tempSet - 2)) {
-      // Check if the furnace has been off for the delay period
-      if (millis() - lastFurnaceOffTime >= furnaceDelay) {
-        digitalWrite(RELAY_PIN, HIGH); // Turn on heat controlling relay
-        heatingOn = true; // Setting the boolean heatingOn to true so other parts of the code know that RELAY_PIN is HIGH
-		  				  // is there an easier way to do this?? Absolutely, but i refuse
+ if (mode == 1) { // Heating mode
+      if (temperatureF < (tempSet - 2)) {
+        if (millis() - lastFurnaceOffTime >= furnaceDelay) {
+          digitalWrite(RELAY_PIN, HIGH);
+          heatingOn = true;
+        }
+      } else {
+        if (temperatureF >= tempSet) {
+          digitalWrite(RELAY_PIN, LOW);
+          lastFurnaceOffTime = millis();
+          heatingOn = false;
+        }
+
+        if (temperatureF < (tempSet - 2) || tempSet != previousTempSet) {
+          Serial.print(F("Target Temperature: "));
+          Serial.print(tempSet, 1);
+          Serial.println(F(" °F"));
+
+          Serial.print(F("Temp: "));
+          Serial.print(temperatureF, 1);
+          Serial.println(F(" °F"));
+          Serial.print(F("Humidity: "));
+          Serial.print(humidity);
+          Serial.println(F(" %"));
+
+          previousTempSet = tempSet;
+          displayTempSet(tempSet);
+        }
       }
-    } else {
-      if (temperatureF >= tempSet) {
-        digitalWrite(RELAY_PIN, LOW); // Turn off heat controlling relay
-        lastFurnaceOffTime = millis();  // Update the time when the furnace was turned off
-        heatingOn = false; // Setting the boolean heatingOn to false so other parts of the code know that RELAY_PIN is LOW
-      }
-
-      // Check if tempSet has changed
-      if (temperatureF < (tempSet - 2) || tempSet != previousTempSet) { // logic  is torture
-        // Print target temperature to the serial monitor
-        Serial.print(F("Target Temperature: "));
-        Serial.print(tempSet, 1);
-        Serial.println(F(" °F"));
-
-        // Print temperature and humidity to the serial monitor
-        Serial.print(F("Temp: "));
-        Serial.print(temperatureF, 1);
-        Serial.println(F(" °F"));
-        Serial.print(F("Humidity: "));
-        Serial.print(humidity);
-        Serial.println(F(" %"));
-
-        // Store the current value of tempSet as the previous value
-        previousTempSet = tempSet;
-
-        // Display the new tempSet on the OLED screen for 5 seconds
-        displayTempSet(tempSet);
+    } else if (mode == 2) { // Cooling mode
+      if (temperatureF > (tempSet + 3)) {
+        digitalWrite(RELAY_PIN0, HIGH);
+        coolingOn = true;
+      } else {
+        if (temperatureF <= tempSet) {
+          digitalWrite(RELAY_PIN0, LOW);
+          coolingOn = false;
+        }
       }
     }
   } else {
+    //Errror handling if DHT22 Sensor fails or any other logic fails
     Serial.println(F("Sum Ting Wong"));
+    display.clearDisplay(); // Clear the OLED first in case anything was left behind
+    display.setTextSize(2);
+    display.setTextColor(SSD1306_WHITE);
+    display.setCursor(0, 0);
+    display.print(F("Error: DHT22 Failure"));
+    display.display();
   }
 
-  delay(2000); // Wait for 2 seconds before the next reading
+  delay(2000); // Wait for 2 seconds for DHT22 stability
 }
