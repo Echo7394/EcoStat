@@ -10,13 +10,15 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 
 **Features:**
 <ul>
--Energy efficient HVAC control using timing based logic and hysteresis.
--Web-based interface for remote control.
--Real-time temperature and humidity display.
--Physical buttons for normal offline control.
--Mode selection (Heating, Cooling, Off).
--Independent Fan control (circulating fan).
--Wi-Fi setup using a captive portal.
+<p>
+Energy efficient HVAC control using timing based logic and hysteresis.
+Web-based interface for remote control.
+Real-time temperature and humidity display.
+Physical buttons for normal offline control.
+Mode selection (Heating, Cooling, Off).
+Independent Fan control (circulating fan).
+Wi-Fi setup using a captive portal.
+</p>
 </ul>
 
 <hr>
