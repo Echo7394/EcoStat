@@ -16,8 +16,9 @@ Features:
 -Mode selection (Heating, Cooling, Off).
 -Independent Fan control (circulating fan).
 -Wi-Fi setup using a captive portal.
+<hr>
 
-**Hardware Requirements:**
+**Hardware Requirements**
 
 **-Seeed Studio Xiao ESP32C3**
 
@@ -28,9 +29,8 @@ Features:
 **-A DHT22 Sensor, I used a "Gowoops 2pcs DHT22/AM2302 Digital Humidity and Temperature Sensor Module" from Amazon**
   
 **-Micro Momentary Button, I used a 4 pin type, you can use anything that fits the mounting hole (6mm or less).**
-
 <hr>
-  
+
 **Software Dependencies**
   
 **-DNSServer**
