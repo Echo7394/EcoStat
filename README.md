@@ -1,11 +1,22 @@
 
   
 # EcoStat
-Seeed Studio Xiao ESP32C3 Smart Thermostat, but simple, and intuitive. Includes internet access to all functions, but does not spy on you, bloat the mcu with unneccesary code or gather any kind of pointless telemetry whatsover.
-Energy saving features are included while not requiring you to sacrifice normal functionality.
+Seeed Studio Xiao EcoStat is an open-source thermostat control system built using the ESP32C3 microcontroller.
+It allows you to control heating, cooling, and fan systems using physical buttons and a web-based interface. 
+Additionally, it displays temperature and humidity information on an OLED screen. The goal of this project was
+to create a cheap, energy saving, open source smart thermostat that doesnt spy on you. So, finally and most 
+importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 
-Parts required:
+Features:
+-Control of heating, cooling, and fan systems.
+-Web-based interface for remote control.
+-Real-time temperature and humidity display.
+-Physical buttons for normal offline control of EcoStat
+-Mode selection (Heating, Cooling, Off).
+-Independent Fan control (circulating fan).
+-Wi-Fi setup using a captive portal.
 
+**Hardware Requirements:**
 **-Seeed Studio Xiao ESP32C3 or other similarly sized ESP32C3 board**
 
 **-Any 128x64 SSD1306 I2C OLED Screen**
@@ -15,8 +26,28 @@ Parts required:
 **-A DHT22 Sensor, I used a "Gowoops 2pcs DHT22/AM2302 Digital Humidity and Temperature Sensor Module" from Amazon**
   
 **-Micro Momentary Button, I used a 4 pin type, you can use anything that fits the mounting hole (6mm or less).**
-  
-   I also used beads as the buttons themselves for the momentary switches just because the actual button pieces were not long enough, get creative.
+
+**Software Dependencies:
+-DNSServer
+-ESPAsync_WiFiManager
+-Wire
+-DHT
+-Adafruit_SSD1306
+-esp_system
+-WiFi
+-ESPAsyncWebServer**
+
+**Configuration:**
+Set your desired username and password for web-based authentication using http_username and http_password (default is blank user, with pass: 13371337).
+Connect the relay modules and physical buttons to the specified pins as defined in the code.
+Upload the code to your ESP32C3 device.
+Uncomment Serial.begin & Open the serial monitor for debugging (optional).
+Access the EcoStat web interface by connecting to the Wi-Fi network "EcoStat-Setup" and visiting the IP address assigned to your device.
+Use the web interface to control heating, cooling, fan, and set the target temperature.
+Button Controls
+BUTTON_FAN: Toggle the fan on and off.
+BUTTON_MODE: Switch between Heating, Cooling, and Off modes.
+BUTTON_PIN0 and BUTTON_PIN1: Increase and decrease the target temperature.
 
 
 The screen displays Temperature, Humidity, MCU Temp, and Wifi Signal Strength.
@@ -29,9 +60,6 @@ The web page also provides the option to trigger the "Fan" relay seperately for 
 <img src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/EcoNet.png" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/Case_Models/microstat.png" width="200" />
 </p>
-
-**Currently a work in progress. A/C control will be added soon, however since its fall, and cold outside, I havent made it that far yet.**
-
 
 Detailed description of the goals of this project:
 
