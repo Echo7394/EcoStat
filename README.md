@@ -1,5 +1,5 @@
 
-  
+<img src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/blah2.png"></img>  
 # EcoStat
 <p>
 EcoStat is an open-source thermostat control system built using the Seed Studio Xiao ESP32C3 microcontroller.
