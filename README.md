@@ -54,7 +54,7 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 
 **-ESPAsyncWebServer**
 </p>
-<p>
+
 **Configuration:**
 Set your desired username and password for web-based authentication using http_username and http_password (default is blank user, with pass: 13371337).
 Connect the relay modules and physical buttons to the specified pins as defined in the code.
@@ -66,7 +66,7 @@ Button Controls
 BUTTON_FAN: Toggle the fan on and off.
 BUTTON_MODE: Switch between Heating, Cooling, and Off modes.
 BUTTON_PIN0 and BUTTON_PIN1: Increase and decrease the target temperature.
-</p>
+
 
 The screen displays Temperature, Humidity, MCU Temp, and Wifi Signal Strength.
 Buttons toggle temperature up & down by one degree at a time.
