@@ -8,14 +8,16 @@ Additionally, it displays temperature and humidity information on an OLED screen
 to create a cheap, energy saving, open source smart thermostat that doesnt spy on you. So, finally and most 
 importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 
-Features:
--Control of heating, cooling, and fan systems.
+**Features:**
+
+-Energy efficient HVAC control using timing based logic and hysteresis.
 -Web-based interface for remote control.
 -Real-time temperature and humidity display.
--Physical buttons for normal offline control of EcoStat
+-Physical buttons for normal offline control.
 -Mode selection (Heating, Cooling, Off).
 -Independent Fan control (circulating fan).
--Wi-Fi setup using a captive portal.
+-Wi-Fi setup using a captive portal.**
+
 <hr>
 
 **Hardware Requirements**
