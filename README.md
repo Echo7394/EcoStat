@@ -27,8 +27,8 @@ Features:
   
 **-A DHT22 Sensor, I used a "Gowoops 2pcs DHT22/AM2302 Digital Humidity and Temperature Sensor Module" from Amazon**
   
-**-Micro Momentary Button, I used a 4 pin type, you can use anything that fits the mounting hole (6mm or less).**
-
+**-Micro Momentary Button, I used a 4 pin type, you can use anything that fits the mounting hole (6mm or less).**</p>
+<p>
 **Software Dependencies:
 -DNSServer
 -ESPAsync_WiFiManager
@@ -38,7 +38,8 @@ Features:
 -esp_system
 -WiFi
 -ESPAsyncWebServer**
-
+</p>
+<p>
 **Configuration:**
 Set your desired username and password for web-based authentication using http_username and http_password (default is blank user, with pass: 13371337).
 Connect the relay modules and physical buttons to the specified pins as defined in the code.
