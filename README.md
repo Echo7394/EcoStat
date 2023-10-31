@@ -68,10 +68,11 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 <li>BUTTON_MODE: Switch between Heating, Cooling, and Off modes.</li>
 <li>BUTTON_PIN0 and BUTTON_PIN1: Increase and decrease the target temperature.</li>
 </ul>
-
+<p>
 The screen displays Temperature, Humidity, MCU Temp, and Wifi Signal Strength.
 Buttons toggle temperature up & down by one degree at a time.
-The "Heat" relay does not trigger until the target temperature is 2 degrees less than the current temperature to prevent excessive toggling and save energy / gas / LP.
+The "Heat" relay does not trigger until the target temperature is 2 degrees less than the current temperature and it has been more than 120 seconds to prevent excessive
+toggling and save energy / gas / LP.
 The web page also provides the option to trigger the "Fan" relay seperately for air circulation without climate control.</p>
 <p float="left">
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
