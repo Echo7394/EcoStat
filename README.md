@@ -60,6 +60,10 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 **-WiFi**
 
 **-ESPAsyncWebServer**
+
+**-ESPAsyncDNSServer**
+
+**-ESPAsyncUDP-**
 </p>
 <hr>
 
