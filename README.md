@@ -8,7 +8,7 @@ Additionally, it displays temperature and humidity information on an OLED screen
 to create a cheap, energy saving, open source smart thermostat that doesnt spy on you. So, finally and most 
 importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 
-**V2 Supports Heating & Colling automatically with multiple relays and all additional features.
+**V2 Supports Heating & Cooling automatically with multiple relays and all additional features.
 V1 only supports minimal features with 2 relays, it can be used for cooling as well. It requires you 
 to manually move the wire from heating to cooling seasonally, this was done to provide a cheaper
 version of the project.**
