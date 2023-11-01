@@ -9,7 +9,7 @@ to create a cheap, energy saving, open source smart thermostat that doesnt spy o
 importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 
 **V2 Supports Heating & Cooling automatically with multiple relays and all additional features.
-V1 only supports minimal features with 2 relays, it can be used for cooling as well. V1 requires you 
+V1 only supports minimal features with two relays, it can be used for cooling as well. V1 requires you 
 to manually move the wire from heating to cooling seasonally, V1 simply offers a cheaper
 version of the project.**
 
