@@ -7,7 +7,7 @@ Made by Echo7394
 
 **************************************************************************************/
 #include <DNSServer.h>
-#include <ESPAsync_WiFiManager.h>
+#include <ESP_WiFiManager.h>
 #include <Wire.h>
 #include <DHT.h>
 #include <Adafruit_SSD1306.h>
@@ -135,7 +135,7 @@ void setup() {
   
   WiFi.mode(WIFI_STA);
   Serial.println("Waiting for WiFi credentials...");
-  ESPAsync_WiFiManager wifiManager(&server, NULL, "EcoStat-Setup");
+  ESP_WiFiManager wifiManager("Ecostat-Setup");
   wifiManager.autoConnect("EcoStat-Setup"); // Start a captive portal
   strcpy(ssid, wifiManager.getConfigPortalSSID().c_str());
   strcpy(password, wifiManager.getConfigPortalPW().c_str());
@@ -187,14 +187,14 @@ void setup() {
       html += "<p>Current Temperature: <strong id='currentTemp'>" + String(temperatureF, 1) + " F</strong></p>";
       html += "<p>Target Temperature: <strong><span id='tempSet'>" + String(tempSet) + "</span> F</strong></p>";
       html += "<p>Heating: <strong id='heatingStatus'>" + heatingStatus + "</strong></p>"; // Display heating status
-	  html += "<p>Cooling: <strong id='coolingStatus'>" + coolingStatus + "</strong></p>"; // Display cooling status
+	    html += "<p>Cooling: <strong id='coolingStatus'>" + coolingStatus + "</strong></p>"; // Display cooling status
       html += "<p>Fan: <strong id='fanStatus'>" + fanStatus + "</strong></p>"; // Display fan status
-	  html += "<p>Mode: <strong id='modeStatus'>" + (String((mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling")))) + "</strong></p>";
+	    html += "<p>Mode: <strong id='modeStatus'>" + (String((mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling")))) + "</strong></p>";
       html += "<p><button onclick='increaseTemp()'>Temp +</button></p>";
       html += "<p><button onclick='decreaseTemp()'>Temp -</button></p>";
       html += "<p><button onclick='fanOn()'>Fan On</button></p>";
       html += "<p><button onclick='fanOff()'>Fan Off</button></p>";
-	  html += "<p><button onclick='changeMode()'>Switch Modes</button></p>";
+	    html += "<p><button onclick='changeMode()'>Switch Modes</button></p>";
       html += "<style>";
       html += "button { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 24px; width: 25vw; }";
       html += "</style>";
@@ -243,7 +243,7 @@ void setup() {
       html += "    }";
       html += "  };";
       html += "}";
-	  html += "function changeMode() {";
+	    html += "function changeMode() {";
       html += "  var xhr = new XMLHttpRequest();";
       html += "  xhr.open('GET', '/changeMode', true);";
       html += "  xhr.send();";
