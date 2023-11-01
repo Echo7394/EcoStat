@@ -72,6 +72,7 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 <li>Uncomment Serial.begin & Open the serial monitor for debugging (optional).</li>
 <li>Access the EcoStat web interface by connecting to the Wi-Fi network "EcoStat-Setup" and visiting the IP address assigned to your device.</li>
 <li>Use the web interface to control heating, cooling, fan, and set the target temperature.</li>
+
 **Button Controls:**
 <li>BUTTON_FAN: Toggle the fan on and off.</li>
 <li>BUTTON_MODE: Switch between Heating, Cooling, and Off modes.</li>
@@ -80,7 +81,7 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 <p>
 The screen displays Temperature, Humidity, MCU Temp, and Wifi Signal Strength.
 Buttons toggle temperature up & down by one degree at a time.
-The "Heat" relay does not trigger until the target temperature is 2 degrees less than the current temperature and it has been more than 120 seconds to prevent excessive
+The "Heat" relay does not trigger until the target temperature is 2 degrees higher than the current temperature and it has been more than 120 seconds to prevent excessive
 toggling and save energy / gas / LP.
 The web page also provides the option to trigger the "Fan" relay seperately for air circulation without climate control.</p>
 
