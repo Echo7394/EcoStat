@@ -27,8 +27,6 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 <li>Mode selection (Heating, Cooling, Off).</li>
 <li>Independent Fan control (circulating fan).</li>
 <li>Wi-Fi setup using a captive portal.</li>
-<li>Does not allow cooling to be active when the current temperature is less than 50F.
-    (Safety feature to prevent damage to AC Unit)</li>
 </p>
 </ul>
 
