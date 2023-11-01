@@ -51,11 +51,17 @@ version of the project.**
 
 **Software Dependencies**
 <p>
-  khoih-prog/ESP_WifiManager@^1.12.1
-	adafruit/DHT sensor library@^1.4.4
-	adafruit/Adafruit SSD1306@^2.5.7
-	https://github.com/me-no-dev/ESPAsyncWebServer.git (Must change AsyncWebSocket.cpp: "return IPAddress(0U)"; to "return IPAddress((uint32_t)0U)" )
-	adafruit/Adafruit Unified Sensor@^1.1.13
+	
+khoih-prog/ESP_WifiManager@^1.12.1
+	
+adafruit/DHT sensor library@^1.4.4
+
+adafruit/Adafruit SSD1306@^2.5.7
+
+https://github.com/me-no-dev/ESPAsyncWebServer.git (Must change AsyncWebSocket.cpp: "return IPAddress(0U)"; to "return IPAddress((uint32_t)0U)" )
+
+adafruit/Adafruit Unified Sensor@^1.1.13
+
 </p>
 <hr>
 
