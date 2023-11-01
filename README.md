@@ -1,5 +1,3 @@
-
-
 # EcoStat
 <p>
 <img height="70" src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/ES1.png"></img>  
@@ -72,7 +70,7 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 <li>Uncomment Serial.begin & Open the serial monitor for debugging (optional).</li>
 <li>Access the EcoStat web interface by connecting to the Wi-Fi network "EcoStat-Setup" and visiting the IP address assigned to your device.</li>
 <li>Use the web interface to control heating, cooling, fan, and set the target temperature.</li>
-
+</ul>
 **Button Controls:**
 <ul>
 <li>BUTTON_FAN: Toggle the fan on and off.</li>
