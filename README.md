@@ -62,7 +62,7 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 **-ESPAsyncWebServer**
 </p>
 
-**Configuration:**
+**Configuration**
 <ul>
 <li>Set your desired username and password for web-based authentication using http_username and http_password (default is blank user, with pass: 13371337).</li>
 <li>Connect the relay modules and physical buttons to the specified pins as defined in the code.</li>
@@ -71,7 +71,8 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 <li>Access the EcoStat web interface by connecting to the Wi-Fi network "EcoStat-Setup" and visiting the IP address assigned to your device.</li>
 <li>Use the web interface to control heating, cooling, fan, and set the target temperature.</li>
 </ul>
-**Button Controls:**
+
+**Button Controls**
 <ul>
 <li>BUTTON_FAN: Toggle the fan on and off.</li>
 <li>BUTTON_MODE: Switch between Heating, Cooling, and Off modes.</li>
