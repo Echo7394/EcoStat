@@ -90,7 +90,7 @@ The web page also provides the option to trigger the "Fan" relay seperately for 
 <hr>
 
 
-Detailed description of the goals of this project:
+Detailed description of the goals of this project and a summary of exactly what the code does:
 
 1. It includes various libraries for Wi-Fi management, sensor readings (DHT22), OLED display control, and web server functionality.
 2. It defines pins and addresses for the OLED display, DHT22 sensor, buttons, and relays.
