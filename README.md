@@ -62,6 +62,7 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 **-ESPAsyncWebServer**
 </p>
 <hr>
+
 **Configuration**
 <ul>
 <li>Set your desired username and password for web-based authentication using http_username and http_password (default is blank user, with pass: 13371337).</li>
@@ -72,6 +73,7 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 <li>Use the web interface to control heating, cooling, fan, and set the target temperature.</li>
 </ul>
 <hr>
+
 **Button Controls**
 <ul>
 <li>BUTTON_FAN: Toggle the fan on and off.</li>
@@ -85,10 +87,10 @@ Buttons toggle temperature up & down by one degree at a time.
 The "Heat" relay does not trigger until the current temperature is 2 degrees lower than the target temperature and it has been more than 120 seconds to prevent excessive
 toggling and save energy / gas / LP.
 The web page also provides the option to trigger the "Fan" relay seperately for air circulation without climate control.</p>
+<hr>
+
 
 Detailed description of the goals of this project:
-
-A thermostat control system using a Xiao ESP32C3, and various sensors and peripherals. Here's an overview of what the code does:
 
 1. It includes various libraries for Wi-Fi management, sensor readings (DHT22), OLED display control, and web server functionality.
 2. It defines pins and addresses for the OLED display, DHT22 sensor, buttons, and relays.
@@ -100,6 +102,6 @@ A thermostat control system using a Xiao ESP32C3, and various sensors and periph
 8. The main loop continuously reads temperature and humidity from the DHT22 sensor and updates the OLED display.
 9. Depending on the operating mode (heating or cooling), it controls relays to turn on/off the heating or cooling system to maintain the desired temperature.
 
-Overall, this code creates a thermostat system with remote control capabilities, allowing users to adjust the target temperature, mode, and fan status through a web interface. It also displays current temperature and humidity on an OLED screen. The system can operate in heating or cooling mode based on the target temperature, and it provides visual feedback on the OLED screen for the user. The physical buttons provide additional control and feedback for users without accessing the web interface.
+Overall, this code creates a thermostat system with remote control capabilities, allowing users to adjust the target temperature, mode, and fan status through a web interface. It also displays current temperature and humidity on an OLED screen. The system can operate in heating or cooling mode based on the target temperature, and it provides visual feedback on the OLED screen for the user. The physical buttons provide additional control and feedback for users without accessing the web interface. No unnecessary data is collected or transmitted by the device, and no personal data is transmitted outside of your LAN.
 
 
