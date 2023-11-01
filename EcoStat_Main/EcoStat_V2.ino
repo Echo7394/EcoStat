@@ -179,7 +179,7 @@ void setup() {
 	String coolingStatus = coolingOn ? "On" : "Off"; // yep
 
 
-    String html = "<html><body style='text-align: center;font-size: 24px;background-color: #000;color: #00FFD3;'>";
+    String html = "<html><body style='text-align: center;font-size: 24px;background-color: #000;color: #00FFD3;@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;900&display=swap');'>";
       html += "<head>";
       html += "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
       html += "</head>";
@@ -196,7 +196,7 @@ void setup() {
       html += "<p><button onclick='fanOff()'>Fan Off</button></p>";
 	  html += "<p><button onclick='changeMode()'>Switch Modes</button></p>";
       html += "<style>";
-      html += "button { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 24px; width: 50vw; }";
+      html += "button { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 24px; width: 25vw; }";
       html += "</style>";
       html += "<script>";                                             // XML is foreign to me so ill be honest 
       html += "function increaseTemp() {";                            // ChatGPT helped me with this part
