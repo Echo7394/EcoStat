@@ -44,8 +44,6 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 <hr>
 
 **Software Dependencies**
-  
-**-DNSServer**
 
 **-ESPAsync_WiFiManager**
 
@@ -74,8 +72,6 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 <li>Set your desired username and password for web-based authentication using http_username and http_password (default is blank user, with pass: 13371337).</li>
 <li>Connect the relay modules and physical buttons to the specified pins as defined in the code.</li>
 <li>Install neccessary libraries</li>
-<li>Edit the line in ESPAsyncUDP.h from: typedef struct ip4_addr ip_addr_t; to: typedef struct ip4_addr eco_ip_addr_t; (Due to library conflicts)</li>
-<li>Edit the line in ESPAsyncWebServer.h and AsyncWebSocket.cpp from: return IPAddress(0U); to: return IPAddress((uint32_t)0U); (This is due to library conflicts otherwise)</li>
 <li>Compile/Build</li>
 <li>Upload the code to your ESP32C3 device.</li>
 <li>Uncomment Serial.begin & Open the serial monitor for debugging (optional).</li>
