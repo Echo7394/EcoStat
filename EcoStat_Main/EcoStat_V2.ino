@@ -61,6 +61,11 @@ float celsiusToFahrenheit(float celsius) { //Converts Celsius to Fahrenheit
 
 int mode = 0; // 0 for off, 1 for heating, 2 for cooling
 
+void button0Pressed();
+void button1Pressed();
+void buttonfanPressed();
+void buttonmodePressed();
+
 void changeMode() {
   mode = (mode + 1) % 3; // Cycle through modes: 0 -> 1 -> 2 -> 0
   // Turn off heating and cooling when switching modes
@@ -120,7 +125,6 @@ void setup() {
   pinMode(BUTTON_PIN1, INPUT_PULLUP); // Erwins Cats are going to get involved
   pinMode(BUTTON_FAN, INPUT_PULLUP);
 
-	
   // Initialize Wi-Fi and display a notification to SSD1306 Screen
   display.clearDisplay();
   display.setTextSize(2);
