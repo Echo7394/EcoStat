@@ -13,7 +13,7 @@ importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 <p float="left">
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231014_162400.jpg" width="200" />
-<img src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/EN2.png" width="200" />
+<img src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/EN.png" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/Case_Models/microstat.png" width="200" />
 </p>
 
