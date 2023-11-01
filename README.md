@@ -10,6 +10,13 @@ Additionally, it displays temperature and humidity information on an OLED screen
 to create a cheap, energy saving, open source smart thermostat that doesnt spy on you. So, finally and most 
 importantly, EcoStat does not use or collect any kind of telemetry data, at ALL.
 
+<p float="left">
+<img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
+<img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231014_162400.jpg" width="200" />
+<img src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/EcoNet.png" width="200" />
+<img src="https://github.com/Echo7394/EcoStat/blob/main/Case_Models/microstat.png" width="200" />
+</p>
+
 **Features:**
 <ul>
 <p>
@@ -76,12 +83,6 @@ Buttons toggle temperature up & down by one degree at a time.
 The "Heat" relay does not trigger until the target temperature is 2 degrees less than the current temperature and it has been more than 120 seconds to prevent excessive
 toggling and save energy / gas / LP.
 The web page also provides the option to trigger the "Fan" relay seperately for air circulation without climate control.</p>
-<p float="left">
-<img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
-<img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231014_162400.jpg" width="200" />
-<img src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/EcoNet.png" width="200" />
-<img src="https://github.com/Echo7394/EcoStat/blob/main/Case_Models/microstat.png" width="200" />
-</p>
 
 Detailed description of the goals of this project:
 
