@@ -113,6 +113,17 @@ void setup() {
   
   delay(3000); // Delay because i've heard setup can get skipped sometimes
 			   // Do not know if thats true so this may not be neccessary
+
+    // Initialize the OLED screen
+  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+    Serial.println(F("SSD1306 allocation failed"));
+    for (;;);
+  }
+
+  display.clearDisplay(); // This just ensures that we start with a clear display
+  display.display();      // on the SSD1306 screen
+
+
 //Serial.begin(115200);      // uncomment this if you need serial output for debugging
   
   pinMode(RELAY_PIN, OUTPUT); 
@@ -125,22 +136,23 @@ void setup() {
   pinMode(BUTTON_PIN1, INPUT_PULLUP); // Erwins Cats are going to get involved
   pinMode(BUTTON_FAN, INPUT_PULLUP);
 
-  // Initialize Wi-Fi and display a notification to SSD1306 Screen
+  // display a notification to SSD1306 Screen for 8 seconds
   display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(0, 10);
-  display.print(F("Setup: Connect to Wi-Fi: EcoStat-Setup")); // display to SSD1306
+  display.print(F("Setup: Connect to Wi-Fi: EcoStat-Setup"));
   display.display();
+  delay(8000);
   
   WiFi.mode(WIFI_STA);
   Serial.println("Waiting for WiFi credentials...");
   ESP_WiFiManager wifiManager("Ecostat-Setup");
-  wifiManager.autoConnect("EcoStat-Setup"); // Start a captive portal
+  wifiManager.setConfigPortalTimeout(300); // Setup portal timeout in seconds, in case user doesnt setup WiFi
+  wifiManager.autoConnect("EcoStat-Setup"); // Start a captive portal for the user to enter WiFi Credentials
   strcpy(ssid, wifiManager.getConfigPortalSSID().c_str());
   strcpy(password, wifiManager.getConfigPortalPW().c_str());
 
-	
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
@@ -154,15 +166,6 @@ void setup() {
   display.print(F("Wi-Fi Connected!")); // display to SSD1306
   display.display();
   delay(3000);
-
-  // Initialize the OLED screen
-  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
-    Serial.println(F("SSD1306 allocation failed"));
-    for (;;);
-  }
-
-  display.clearDisplay(); // This just ensures that we start with a clear display
-  display.display();      // on the SSD1306 screen
 
   dht.begin();
 
@@ -195,8 +198,10 @@ void setup() {
       html += "<p><button onclick='fanOn()'>Fan On</button></p>";
       html += "<p><button onclick='fanOff()'>Fan Off</button></p>";
 	    html += "<p><button onclick='changeMode()'>Switch Modes</button></p>";
+      html += "<p><button class='diff' onclick='restart()'>Restart Device</button></p>";
       html += "<style>";
       html += "button { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 24px; width: 25vw; }";
+      html += "button.diff { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 10px; width: 10vw; }";
       html += "</style>";
       html += "<script>";                                             // XML is foreign to me so ill be honest 
       html += "function increaseTemp() {";                            // ChatGPT helped me with this part
@@ -254,6 +259,18 @@ void setup() {
       html += "    }";
       html += "  };";
       html += "}";
+      html += "function restart() {";
+      html += "  var xhr = new XMLHttpRequest();";
+      html += "  xhr.open('GET', '/restart', true);";
+      html += "  xhr.send();";
+      html += "  xhr.onload = function () {";
+      html += "    if (xhr.status === 200) {";
+      html += "      alert('Device is restarting.');";
+      html += "    } else {";
+      html += "      alert('Failed to restart the device.');";
+      html += "    }";
+      html += "  };";
+      html += "}";
       html += "</script>";
       html += "</body></html>";
       request->send(200, "text/html", html);
@@ -300,6 +317,12 @@ void setup() {
   changeMode();
   request->send(200, "text/plain", "Mode switched.");
   displayModeStatus (String((mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling")))); // Update and display the new mode
+});
+server.on("/restart", HTTP_GET, [](AsyncWebServerRequest *request) {
+  if (!request->authenticate(http_username, http_password)) {
+    return request->requestAuthentication();
+  }
+  ESP.restart();
 });
   server.begin();
 
