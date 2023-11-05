@@ -6,6 +6,7 @@ GNU GENERAL PUBLIC LICENSE V3.0
 Made by Echo7394                             
 
 **************************************************************************************/
+#include <ArduinoOTA.h>
 #include <DNSServer.h>
 #include <ESP_WiFiManager.h>
 #include <Wire.h>
@@ -166,6 +167,8 @@ void setup() {
   display.print(F("Wi-Fi Connected!")); // display to SSD1306
   display.display();
   delay(3000);
+
+  ArduinoOTA.begin();
 
   dht.begin();
 
@@ -376,6 +379,8 @@ void loop() {
   float temperatureC = dht.readTemperature();
   float temperatureF = celsiusToFahrenheit(temperatureC); // converts C to F and assigns it to temperatureF because 'Merica
   float humidity = dht.readHumidity();
+
+  ArduinoOTA.begin();
 
   int rssi = WiFi.RSSI(); 								 // Comments are exhausting.... I think you can figure this one out.
   Serial.print("Wi-Fi Signal Strength (RSSI): ");
