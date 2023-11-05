@@ -43,7 +43,7 @@ char password[64] = ""; // Will store the Wi-Fi password
 
 AsyncWebServer server(80); // Web server to port 80 TCP
 
-int tempSet = 60; // Initial target temperature in degrees Fahrenheit
+int tempSet = 68; // Initial target temperature in degrees Fahrenheit
 const char* http_username = ""; // Change to your desired username
 const char* http_password = "13371337"; // Change to your desired password
 
@@ -406,7 +406,6 @@ void loop() {
 
     unsigned long lastFurnaceOffTime = 0; // Store the last time the furnace was turned off
     unsigned long furnaceDelay = 120000;    // Delay before turning the furnace back on (120,000 ms = 120 seconds)
-	unsigned long modeStatusLastUpdated = 0;
 	  
  // Check if the mode status was updated and clear the display after 2 seconds
   if (millis() - modeStatusLastUpdated < 2000) {
