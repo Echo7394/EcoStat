@@ -418,7 +418,7 @@ void loop() {
   }
 
  if (mode == 1) { // Heating mode
-      if (temperatureF < (tempSet - 2)) {
+      if (temperatureF < (tempSet - 2)) { // Turns on heating if the current sensor temp is 2 deg less than the target temp
         if (millis() - lastFurnaceOffTime >= furnaceDelay) {
           digitalWrite(RELAY_PIN, HIGH);
           heatingOn = true;
@@ -430,7 +430,7 @@ void loop() {
           heatingOn = false;
         }
 
-        if (temperatureF < (tempSet - 2) || tempSet != previousTempSet) {
+        if (tempSet != previousTempSet) { //
           Serial.print(F("Target Temperature: "));
           Serial.print(tempSet, 1);
           Serial.println(F(" °F"));
@@ -447,7 +447,7 @@ void loop() {
         }
       }
     } else if (mode == 2) { // Cooling mode
-      if (temperatureF > (tempSet + 3)) {
+      if (temperatureF > (tempSet + 3)) { // Turns on cooling if the current sensor temp is 3 degrees more than the target temp
         digitalWrite(RELAY_PIN0, HIGH);
         coolingOn = true;
       } else {
