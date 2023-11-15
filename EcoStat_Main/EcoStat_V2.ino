@@ -140,9 +140,8 @@ void setup() {
   pinMode(BUTTON_FAN, INPUT_PULLUP);
 
   // display a notification to SSD1306 Screen for user setup if WiFi not attached to SSID
-  ESP_WiFiManager wifiManager("EcoStatSetup");
-  if(WL_CONNECTED){
   WiFi.mode(WIFI_STA);
+  ESP_WiFiManager wifiManager("EcoStatSetup");
   Serial.println("Waiting for WiFi credentials...");
   display.clearDisplay();
   display.setTextSize(1);
@@ -157,12 +156,20 @@ void setup() {
   ssid = wifiManager.getStoredWiFiSSID();
   password = wifiManager.getStoredWiFiPass();
   wifiManager.setConfigPortalTimeout(300);  // Setup portal timeout in seconds, in case user doesnt setup WiFi
-  }
 
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     Serial.println("Connecting to WiFi...");
+    display.clearDisplay();
+    display.setTextSize(2);
+    display.setTextColor(SSD1306_WHITE);
+    display.setCursor(40, 10);
+    display.print(F("WiFi"));  // display to SSD1306
+    display.setCursor(5, 30);
+    display.print(F("Connecting"));
+    display.display();
+    delay(1000);
   }
   Serial.println("Connected to WiFi");
   display.clearDisplay();
