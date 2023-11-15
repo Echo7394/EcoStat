@@ -351,6 +351,7 @@ void setup() {
       return request->requestAuthentication();
     }
     wifiManager.resetSettings();
+    ESP.restart();
   });
 
   server.begin();
