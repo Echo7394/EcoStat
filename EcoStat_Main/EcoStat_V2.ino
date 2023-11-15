@@ -103,8 +103,9 @@ void displayModeStatus(String modeStatus) {  // Gets flashed to the OLED wheneve
   display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0, 20);
+  display.setCursor(40, 10);
   display.print(F("Mode: "));
+  display.setCursor(25,30);
   display.print(modeStatus);
   display.display();
 
@@ -138,9 +139,10 @@ void setup() {
   pinMode(BUTTON_PIN1, INPUT_PULLUP);  // Erwins Cats are going to get involved
   pinMode(BUTTON_FAN, INPUT_PULLUP);
 
-  // display a notification to SSD1306 Screen for user setup
-  WiFi.mode(WIFI_STA);
+  // display a notification to SSD1306 Screen for user setup if WiFi not attached to SSID
   ESP_WiFiManager wifiManager("EcoStatSetup");
+  if(WL_CONNECTED){
+  WiFi.mode(WIFI_STA);
   Serial.println("Waiting for WiFi credentials...");
   display.clearDisplay();
   display.setTextSize(1);
@@ -155,6 +157,7 @@ void setup() {
   ssid = wifiManager.getStoredWiFiSSID();
   password = wifiManager.getStoredWiFiPass();
   wifiManager.setConfigPortalTimeout(300);  // Setup portal timeout in seconds, in case user doesnt setup WiFi
+  }
 
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
@@ -165,8 +168,10 @@ void setup() {
   display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0, 10);
-  display.print(F("Wi-Fi Connected!"));  // display to SSD1306
+  display.setCursor(40, 10);
+  display.print(F("WiFi"));  // display to SSD1306
+  display.setCursor(10, 30);
+  display.print(F("Connected"));
   display.display();
   delay(3000);
 
@@ -204,9 +209,10 @@ void setup() {
     html += "<p><button onclick='fanOff()'>Fan Off</button></p>";
     html += "<p><button onclick='changeMode()'>Switch Modes</button></p>";
     html += "<p><button class='diff' onclick='restart()'>Restart Device</button></p>";
+    html += "<p><button class='diff' onclick='reset()'>Clear WiFi</button></p>";
     html += "<style>";
     html += "button { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 24px; width: 25vw; }";
-    html += "button.diff { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 10px; width: 10vw; }";
+    html += "button.diff { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 10px; width: 13vw; }";
     html += "</style>";
     html += "<script>";                   // XML is foreign to me so ill be honest
     html += "function increaseTemp() {";  // ChatGPT helped me with this part
@@ -276,6 +282,18 @@ void setup() {
     html += "    }";
     html += "  };";
     html += "}";
+    html += "function reset() {";
+    html += "  var xhr = new XMLHttpRequest();";
+    html += "  xhr.open('GET', '/reset', true);";
+    html += "  xhr.send();";
+    html += "  xhr.onload = function () {";
+    html += "    if (xhr.status === 200) {";
+    html += "      alert('Device is clearing WiFi Settings');";
+    html += "    } else {";
+    html += "      alert('Failed to reset.');";
+    html += "    }";
+    html += "  };";
+    html += "}";
     html += "</script>";
     html += "</body></html>";
     request->send(200, "text/html", html);
@@ -328,6 +346,13 @@ void setup() {
     }
     ESP.restart();
   });
+  server.on("/reset", HTTP_GET, [&wifiManager](AsyncWebServerRequest *request) {
+    if (!request->authenticate(http_username, http_password)) {
+      return request->requestAuthentication();
+    }
+    wifiManager.resetSettings();
+  });
+
   server.begin();
 
   attachInterrupt(digitalPinToInterrupt(BUTTON_PIN0), button0Pressed, FALLING);  // Interrupt to detect button press
@@ -462,16 +487,21 @@ void loop() {
           coolingOn = false;
         }
       }
+    } else if (mode == 0) {
+      digitalWrite(RELAY_PIN0, LOW);
+      coolingOn = false;
+      digitalWrite(RELAY_PIN, LOW);
+      heatingOn = false;
     }
   } else {
     //Errror handling if DHT22 Sensor fails or any other logic fails
-    Serial.println(F("Sum Ting Wong"));
     display.clearDisplay();  // Clear the OLED first in case anything was left behind
     display.setTextSize(2);
     display.setTextColor(SSD1306_WHITE);
     display.setCursor(0, 0);
-    display.print(F("Error: DHT22 Failure"));
+    display.print(F("Error: Failure"));
     display.display();
+    Serial.println(F("Sum Ting Wong"));
   }
 
   delay(2000);  // Wait for 2 seconds for DHT22 stability
