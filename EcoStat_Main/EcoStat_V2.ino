@@ -202,8 +202,9 @@ void setup() {
     String html = "<html><body style='text-align: center;font-size: 24px;background-color: #000;color: #00FFD3;@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;900&display=swap');'>";
     html += "<head>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
+    html += "<meta http-equiv='refresh' content='8'>"; // Refresh the page every 8 sec to update values
     html += "</head>";
-    html += "<h1 style='color: #00FFD3;text-shadow: -3px 3px 5px #5C5C5C;'>EcoNet Control</h1>";
+    html += "<h1 style='margin-top: -8px; color: #00FFD3;text-shadow: -3px 3px 5px #5C5C5C;'>EcoNet Control</h1>";
     html += "<p>Current Temperature: <strong id='currentTemp'>" + String(temperatureF, 1) + " F</strong></p>";
     html += "<p>Target Temperature: <strong><span id='tempSet'>" + String(tempSet) + "</span> F</strong></p>";
     html += "<p>Heating: <strong id='heatingStatus'>" + heatingStatus + "</strong></p>";  // Display heating status
@@ -214,15 +215,15 @@ void setup() {
     html += "<p><button onclick='decreaseTemp()'>Temp -</button></p>";
     html += "<p><button onclick='fanOn()'>Fan On</button></p>";
     html += "<p><button onclick='fanOff()'>Fan Off</button></p>";
-    html += "<p><button onclick='changeMode()'>Switch Modes</button></p>";
+    html += "<p><button onclick='changeMode()'>Mode</button></p>";
     html += "<p><button class='diff' onclick='restart()'>Restart Device</button></p>";
-    html += "<p><button class='diff' onclick='reset()'>Clear WiFi</button></p>";
+    html += "<p><button class='diff' onclick='reset()'>Reset WiFi</button></p>";
     html += "<style>";
     html += "button { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 24px; width: 25vw; }";
     html += "button.diff { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 10px; width: 13vw; }";
     html += "</style>";
-    html += "<script>";                   // XML is foreign to me so ill be honest
-    html += "function increaseTemp() {";  // ChatGPT helped me with this part
+    html += "<script>";                   // XML is hell
+    html += "function increaseTemp() {";  
     html += "  var xhr = new XMLHttpRequest();";
     html += "  xhr.open('GET', '/increase', true);";
     html += "  xhr.send();";
@@ -405,7 +406,7 @@ void buttonfanPressed() {
 }
 
 void loop() {
-  static float previousTempSet = tempSet;  // Store the previous value of tempSet
+  static float previousTempSet = tempSet;  // Store the value of tempSet
   static unsigned long fanStartTime = 0;   // Variable to store the time when the fan relay was turned on, not currently used since i dont see a need for it yet.
   int tempC = temperatureRead();           // read ESP32C3 device temperature for display later
 
@@ -468,22 +469,6 @@ void loop() {
           lastFurnaceOffTime = millis();
           heatingOn = false;
         }
-
-        if (tempSet != previousTempSet) {  //
-          Serial.print(F("Target Temperature: "));
-          Serial.print(tempSet, 1);
-          Serial.println(F(" °F"));
-
-          Serial.print(F("Temp: "));
-          Serial.print(temperatureF, 1);
-          Serial.println(F(" °F"));
-          Serial.print(F("Humidity: "));
-          Serial.print(humidity);
-          Serial.println(F(" %"));
-
-          previousTempSet = tempSet;
-          displayTempSet(tempSet);
-        }
       }
     } else if (mode == 2) {                // Cooling mode
       if (temperatureF > (tempSet + 3)) {  // Turns on cooling if the current sensor temp is 3 degrees more than the target temp
@@ -511,6 +496,14 @@ void loop() {
     display.display();
     Serial.println(F("Sum Ting Wong"));
   }
+  
+  if (tempSet != previousTempSet) {  //
+          Serial.print(F("Target Temperature: "));
+          Serial.print(tempSet, 1);
+          Serial.println(F(" °F"));
 
+          displayTempSet(tempSet);
+          previousTempSet = tempSet;
+        }
   delay(2000);  // Wait for 2 seconds for DHT22 stability
 }
