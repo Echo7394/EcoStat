@@ -214,7 +214,7 @@ void setup() {
     html += "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
     html += "<meta http-equiv='refresh' content='8'>"; // Refresh the page every 8 sec to update values
     html += "</head>";
-    html += "<h1 style='margin-top: -8px; color: #00FFD3;text-shadow: -3px 3px 5px #5C5C5C;'>EcoNet Control</h1>";
+    html += "<h1 style='margin-top: -8px; color: #00FFD3;text-shadow: -3px 3px 5px #5C5C5C;'>EcoStat Control</h1>";
     html += "<p>Current Temperature: <strong id='currentTemp'>" + String(temperatureF, 1) + " F</strong></p>";
     html += "<p>Target Temperature: <strong><span id='tempSet'>" + String(tempSet) + "</span> F</strong></p>";
     html += "<p>Heating: <strong id='heatingStatus'>" + heatingStatus + "</strong></p>";  // Display heating status
