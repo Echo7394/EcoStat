@@ -97,6 +97,16 @@ void displayFanStatus() {  // Gets flashed to the OLED whenever fanisOn changes
     display.print(F("Fan: Off"));
   }
   display.display();
+  delay(1000);
+}
+
+int modeFan = 0;
+
+void switchFan() {
+  modeFan = (modeFan + 1) % 2; // Cycle fan state 0 -> 1 -> 0
+  digitalWrite(RELAY_PIN1, modeFan == 1); // Turn on the fan relay when modeFan is 1
+  fanisOn = (modeFan == 1);
+  displayFanStatus();
 }
 
 void displayModeStatus(String modeStatus) {  // Gets flashed to the OLED whenever modeStatus changes
@@ -213,8 +223,7 @@ void setup() {
     html += "<p>Mode: <strong id='modeStatus'>" + (String((mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling")))) + "</strong></p>";
     html += "<p><button onclick='increaseTemp()'>Temp +</button></p>";
     html += "<p><button onclick='decreaseTemp()'>Temp -</button></p>";
-    html += "<p><button onclick='fanOn()'>Fan On</button></p>";
-    html += "<p><button onclick='fanOff()'>Fan Off</button></p>";
+    html += "<p><button onclick='switchFan()'>Fan</button></p>";
     html += "<p><button onclick='changeMode()'>Mode</button></p>";
     html += "<p><button class='diff' onclick='restart()'>Restart Device</button></p>";
     html += "<p><button class='diff' onclick='reset()'>Reset WiFi</button></p>";
@@ -245,25 +254,14 @@ void setup() {
     html += "    }";
     html += "  };";
     html += "}";
-    html += "function fanOn() {";
+    html += "function switchFan() {";
     html += "  var xhr = new XMLHttpRequest();";
-    html += "  xhr.open('GET', '/fanOn', true);";
+    html += "  xhr.open('GET', '/fanSwitch', true);";
     html += "  xhr.send();";
     html += "  xhr.onload = function () {";
     html += "    if (xhr.status === 200) {";
     html += "      var fanStatusVal = document.getElementById('fanStatus');";
-    html += "      fanStatusVal.innerText = 'On';";
-    html += "    }";
-    html += "  };";
-    html += "}";
-    html += "function fanOff() {";
-    html += "  var xhr = new XMLHttpRequest();";
-    html += "  xhr.open('GET', '/fanOff', true);";
-    html += "  xhr.send();";
-    html += "  xhr.onload = function () {";
-    html += "    if (xhr.status === 200) {";
-    html += "      var fanStatusVal = document.getElementById('fanStatus');";
-    html += "      fanStatusVal.innerText = 'Off';";
+    html += "      fanStatusVal.innerText = (fanStatusVal.innerText === 'On') ? 'Off' : 'On';";
     html += "    }";
     html += "  };";
     html += "}";
@@ -322,23 +320,12 @@ void setup() {
     tempSet -= 1.0;  // Decrease the target temperature by 1 degree
     request->send(200, "text/plain", "Decreased target temperature by 1 degree.");
   });
-  server.on("/fanOn", HTTP_GET, [](AsyncWebServerRequest *request) {
-    if (!request->authenticate(http_username, http_password)) {
-      return request->requestAuthentication();
-    }
-    digitalWrite(RELAY_PIN1, HIGH);  // Turn on the fan relay
-    fanisOn = true;
-    request->send(200, "text/plain", "Fan is turned on.");
-    displayFanStatus();  // Gets called everytime fanisOn changes throughout the code
-  });
-  server.on("/fanOff", HTTP_GET, [](AsyncWebServerRequest *request) {
-    if (!request->authenticate(http_username, http_password)) {
-      return request->requestAuthentication();
-    }
-    digitalWrite(RELAY_PIN1, LOW);  // Turn off the fan relay
-    fanisOn = false;
-    request->send(200, "text/plain", "Fan is turned off.");
-    displayFanStatus();
+  server.on("/fanSwitch", HTTP_GET, [](AsyncWebServerRequest *request) {
+  if (!request->authenticate(http_username, http_password)) {
+    return request->requestAuthentication();
+  }
+  switchFan();
+  request->send(200, "text/plain", "Fan state switched.");
   });
   server.on("/changeMode", HTTP_GET, [](AsyncWebServerRequest *request) {
     if (!request->authenticate(http_username, http_password)) {
