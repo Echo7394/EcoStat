@@ -401,8 +401,10 @@ void loop() {
   float temperatureC = dht.readTemperature();
   float temperatureF = celsiusToFahrenheit(temperatureC);  // converts C to F and assigns it to temperatureF because 'Merica
   float humidity = dht.readHumidity();
-
-  ArduinoOTA.begin();
+  
+  ArduinoOTA.setHostname("ESP32C3");
+  ArduinoOTA.setPassword("ESP32C3");
+  ArduinoOTA.handle();
 
   int rssi = WiFi.RSSI();  // Comments are exhausting.... I think you can figure this one out.
   Serial.print("Wi-Fi Signal Strength (RSSI): ");
