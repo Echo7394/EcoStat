@@ -14,7 +14,7 @@ to manually move the wire from heating to cooling seasonally, V1 simply offers a
 version of the project.**
 
 I put a lot of soul into this project, and more importantly the desire to keep it free, open source, and unintrusive.
-So if you like the project, please consider buying me a coffee! <a href="https://venmo.com/u/cspires1993">**Donate :)**</a>
+So if you like the project, please consider buying me a coffee! <a href="https://account.venmo.com/u/cspires1993">**Donate :)**</a>
 
 </p>
 <p float="left">
