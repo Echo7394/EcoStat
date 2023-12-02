@@ -13,6 +13,9 @@ V1 only supports minimal features with two relays, it can be used for cooling as
 to manually move the wire from heating to cooling seasonally, V1 simply offers a cheaper
 version of the project.**
 
+I put a lot of soul into this project, and more importantly the desire to keep it free, open source, and unintrusive.
+So if you like the project, please consider buying me a coffee! <form action="https://www.freecodecamp.org/"><input type="submit" value="Donate :)"></form>
+
 </p>
 <p float="left">
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
