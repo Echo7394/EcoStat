@@ -39,7 +39,7 @@ So if you enjoy it, please consider buying me a coffee! <a href="https://cash.ap
 
 <hr>
 
-**Hardware Requirements**
+**Hardware Requirements (Total cost approx $45)**
 
 **-Seeed Studio Xiao ESP32C3**
 
