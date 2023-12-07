@@ -45,7 +45,7 @@ So if you enjoy it, please consider buying me a coffee! <a href="https://cash.ap
 
 **-Any 128x64 SSD1306 I2C OLED Screen**
 
-**-Two or Three 5V One Channel Relay Module, I used "HiLetgo 2pcs 5V One Channel Relay Module Relay Switch with OPTO Isolation High Low Level Trigger" from Amazon**
+**-Two or Three 5V One Channel Relay Modules, I used "HiLetgo 2pcs 5V One Channel Relay Module Relay Switch with OPTO Isolation High Low Level Trigger" from Amazon**
   
 **-A DHT22 Sensor, I used a "Gowoops 2pcs DHT22/AM2302 Digital Humidity and Temperature Sensor Module" from Amazon**
   
