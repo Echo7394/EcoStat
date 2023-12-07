@@ -21,7 +21,7 @@ So if you enjoy it, please consider buying me a coffee! <a href="https://cash.ap
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231014_162400.jpg" width="200" />
 <img src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/esss.png" width="200" />
-<img src="https://github.com/Echo7394/EcoStat/blob/main/Case_Models/microstat.png" width="200" />
+<img src="https://github.com/Echo7394/EcoStat/blob/main/Case_Models/3dfile.png" width="200" />
 </p>
 
 **Features:**
