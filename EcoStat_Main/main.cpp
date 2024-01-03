@@ -32,7 +32,7 @@ DHT dht(DHT_PIN, DHT22);
 
 #define buzzerPin 5   // trigger pin for piezo buzzer
 #define RELAY_PIN 10   // trigger pin for "Heat" relay
-#define RELAY_PIN0 9   // trigger pin for "Cooling" relay
+#define RELAY_PIN0 5   // trigger pin for "Cooling" relay
 #define RELAY_PIN1 21  // trigger pin for "Fan" relay
 
 String ssid = "blank";      // Will store the Wi-Fi SSID from the captive portal
@@ -45,8 +45,8 @@ String password = "blank";  // Will store the Wi-Fi password
 AsyncWebServer server(80);  // Web server to port 80 TCP
 
 int tempSet = 68;                        // Initial target temperature in degrees Fahrenheit
-const char *http_username = "admin";          // Change to your desired username
-const char *http_password = "13371337";  // Change to your desired password
+const char *http_username = "";          // Change to your desired username
+const char *http_password = "199312";  // Change to your desired password
 
 unsigned long lastDebounceTime = 0;       // Momentary switches like to be bouncy
 unsigned long debounceDelay = 300;       // These variables will take care of that later
