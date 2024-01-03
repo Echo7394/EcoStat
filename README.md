@@ -13,12 +13,16 @@ V1 only supports minimal features with two relays, it can be used for cooling as
 to manually move the wire from heating to cooling seasonally, V1 simply offers a cheaper
 version of the project.**
 
+I put a lot of soul into this project, and more importantly the desire to keep it free, open source, and unintrusive.
+So if you enjoy it, please consider buying me a coffee! <a href="https://cash.app/$seripsirhc">**Donate :)**</a>
+
 </p>
 <p float="left">
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231014_162400.jpg" width="200" />
-<img src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/EN.png" width="200" />
-<img src="https://github.com/Echo7394/EcoStat/blob/main/Case_Models/microstat.png" width="200" />
+<img src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/ESN1.jpg" width="200" />
+<img src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/esss.png" width="200" />
+<img src="https://github.com/Echo7394/EcoStat/blob/main/img/3dfile.png" width="300" />
 </p>
 
 **Features:**
@@ -36,13 +40,13 @@ version of the project.**
 
 <hr>
 
-**Hardware Requirements**
+**Hardware Requirements (Total cost approx $45)**
 
 **-Seeed Studio Xiao ESP32C3**
 
 **-Any 128x64 SSD1306 I2C OLED Screen**
 
-**-Two 5V One Channel Relay Module, I used "HiLetgo 2pcs 5V One Channel Relay Module Relay Switch with OPTO Isolation High Low Level Trigger" from Amazon**
+**-Two or Three 5V One Channel Relay Modules, I used "HiLetgo 2pcs 5V One Channel Relay Module Relay Switch with OPTO Isolation High Low Level Trigger" from Amazon**
   
 **-A DHT22 Sensor, I used a "Gowoops 2pcs DHT22/AM2302 Digital Humidity and Temperature Sensor Module" from Amazon**
   
