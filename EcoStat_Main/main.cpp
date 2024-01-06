@@ -45,8 +45,8 @@ String password = "blank";  // Will store the Wi-Fi password
 AsyncWebServer server(80);  // Web server to port 80 TCP
 
 int tempSet = 68;                        // Initial target temperature in degrees Fahrenheit
-const char *http_username = "";          // Change to your desired username
-const char *http_password = "199312";  // Change to your desired password
+const char *http_username = "admin";          // Change to your desired username
+const char *http_password = "13371337";  // Change to your desired password
 
 unsigned long lastDebounceTime = 0;       // Momentary switches like to be bouncy
 unsigned long debounceDelay = 300;       // These variables will take care of that later
@@ -57,6 +57,9 @@ bool coolingOn = false;  // cooling status
 bool fanisOn = false;    // same as above but for.... the fan relay
 
 bool wifiCredentialsEntered = false;
+
+unsigned long lastDHTPollTime = 0;
+const unsigned long dhtPollInterval = 3000; // var to poll the DHT22 every 3 seconds, for stability
 
 float celsiusToFahrenheit(float celsius) {  //Converts Celsius to Fahrenheit
   return (celsius * 9.0 / 5.0) + 32.0;
@@ -153,7 +156,7 @@ void buttonfanPressed() {
 }
 
 void setup() {
-  Serial.begin(115200);  // uncomment this if you need serial output for debugging
+//Serial.begin(115200);  // uncomment this if you need serial output for debugging
   delay(3000);           // Delay because i've heard setup can get skipped sometimes
                          // Do not know if thats true so this may not be neccessary
 
@@ -229,7 +232,8 @@ void setup() {
   delay(3000);
 
   ArduinoOTA.begin();
-
+  ArduinoOTA.setHostname("ESP32C3");
+  ArduinoOTA.setPassword("ESP32C3");
   dht.begin();
 
   // Serve a webpage to control features remotely,
@@ -394,19 +398,21 @@ void setup() {
 }
 
 void loop() {
+  ArduinoOTA.handle();
+
   static bool previousFanState = fanisOn;
   static float previousTempSet = tempSet;  // Store the value of tempSet
   static unsigned long fanStartTime = 0;   // Variable to store the time when the fan relay was turned on, not currently used since i dont see a need for it yet.
   int tempC = temperatureRead();           // read ESP32C3 device temperature for display later
+  
 
-  // Read temperature and humidity
+  // Read temperature and humidity and only execute this block every 3 seconds for DHT22 stability
+  if (millis() - lastDHTPollTime > dhtPollInterval) {
   float temperatureC = dht.readTemperature();
   float temperatureF = celsiusToFahrenheit(temperatureC);  // converts C to F and assigns it to temperatureF because 'Merica
   float humidity = dht.readHumidity();
-  
-  ArduinoOTA.setHostname("ESP32C3");
-  ArduinoOTA.setPassword("ESP32C3");
-  ArduinoOTA.handle();
+  lastDHTPollTime = millis();
+
 
   int rssi = WiFi.RSSI();  // Comments are exhausting.... I think you can figure this one out.
   Serial.print("Wi-Fi Signal Strength (RSSI): ");
@@ -483,8 +489,9 @@ void loop() {
     display.print(F("Error: Failure"));
     display.display();
     Serial.println(F("Sum Ting Wong"));
+    playTone(1000, 10000);
   }
-  
+  } // End of delayed DHT22 polling block
   if (tempSet != previousTempSet) {  
           Serial.print(F("Target Temperature: "));
           Serial.print(tempSet, 1);
@@ -498,5 +505,5 @@ void loop() {
     displayFanStatus();
     previousFanState = fanisOn;
   }
-  delay(2000);  // Wait for 2 seconds for DHT22 stability
+  delay(500);
 }
