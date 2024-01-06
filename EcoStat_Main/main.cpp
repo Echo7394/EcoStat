@@ -184,8 +184,7 @@ void setup() {
   pinMode(BUTTON_PIN1, INPUT_PULLUP);  // Erwins Cats are going to get involved
   pinMode(BUTTON_FAN, INPUT_PULLUP);
 
-  // display a notification to SSD1306 Screen for user setup if WiFi not attached to SSID
-  WiFi.mode(WIFI_STA);
+  //start captive portal and display a notification to SSD1306 Screen for user setup if WiFi not attached to SSID
   ESP_WiFiManager wifiManager("EcoStatSetup");
   Serial.println("Waiting for WiFi credentials...");
   display.clearDisplay();
@@ -205,7 +204,8 @@ void setup() {
   ssid = wifiManager.getStoredWiFiSSID();
   password = wifiManager.getStoredWiFiPass();
   wifiManager.setConfigPortalTimeout(300);  // Setup portal timeout in seconds, in case user doesnt setup WiFi
-
+  WiFi.mode(WIFI_STA);
+  
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
