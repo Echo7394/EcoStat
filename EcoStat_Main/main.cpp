@@ -45,8 +45,8 @@ String password = "blank";  // Will store the Wi-Fi password
 AsyncWebServer server(80);  // Web server to port 80 TCP
 
 int tempSet = 68;                        // Initial target temperature in degrees Fahrenheit
-const char *http_username = "admin";          // Change to your desired username
-const char *http_password = "13371337";  // Change to your desired password
+const char *http_username = "";          // Change to your desired username
+const char *http_password = "199312";  // Change to your desired password
 
 unsigned long lastDebounceTime = 0;       // Momentary switches like to be bouncy
 unsigned long debounceDelay = 300;       // These variables will take care of that later
@@ -59,7 +59,7 @@ bool fanisOn = false;    // same as above but for.... the fan relay
 bool wifiCredentialsEntered = false;
 
 unsigned long lastDHTPollTime = 0;
-const unsigned long dhtPollInterval = 3000; // var to poll the DHT22 every 3 seconds, for stability
+const unsigned long dhtPollInterval = 6000;
 
 float celsiusToFahrenheit(float celsius) {  //Converts Celsius to Fahrenheit
   return (celsius * 9.0 / 5.0) + 32.0;
@@ -156,6 +156,7 @@ void buttonfanPressed() {
 }
 
 void setup() {
+  bool setCpuFrequencyMhz(80); // slowwww the CPU frequency down for stability and power consumption
 //Serial.begin(115200);  // uncomment this if you need serial output for debugging
   delay(3000);           // Delay because i've heard setup can get skipped sometimes
                          // Do not know if thats true so this may not be neccessary
@@ -184,7 +185,7 @@ void setup() {
   pinMode(BUTTON_PIN1, INPUT_PULLUP);  // Erwins Cats are going to get involved
   pinMode(BUTTON_FAN, INPUT_PULLUP);
 
-  //start captive portal and display a notification to SSD1306 Screen for user setup if WiFi not attached to SSID
+  // display a notification to SSD1306 Screen for user setup if WiFi not attached to SSID
   ESP_WiFiManager wifiManager("EcoStatSetup");
   Serial.println("Waiting for WiFi credentials...");
   display.clearDisplay();
@@ -205,7 +206,7 @@ void setup() {
   password = wifiManager.getStoredWiFiPass();
   wifiManager.setConfigPortalTimeout(300);  // Setup portal timeout in seconds, in case user doesnt setup WiFi
   WiFi.mode(WIFI_STA);
-  
+
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
@@ -247,101 +248,104 @@ void setup() {
     String heatingStatus = heatingOn ? "On" : "Off";  // Determine the state of heatingOn and assign it to heating Status with a variable string
     String fanStatus = fanisOn ? "On" : "Off";        // Same thing but you know... the fan
     String coolingStatus = coolingOn ? "On" : "Off";  // yep
-
-
-    String html = "<html><body style='text-align: center;font-size: 24px;background-color: #000;color: #00FFD3;@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;900&display=swap');'>";
-    html += "<head>";
-    html += "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
-    html += "<meta http-equiv='refresh' content='8'>"; // Refresh the page every 8 sec to update values
-    html += "</head>";
-    html += "<h1 style='margin-top: -8px; color: #00FFD3;text-shadow: -3px 3px 5px #5C5C5C;'>EcoStat Control</h1>";
-    html += "<p>Current Temperature: <strong id='currentTemp'>" + String(temperatureF, 1) + " F</strong></p>";
-    html += "<p>Target Temperature: <strong><span id='tempSet'>" + String(tempSet) + "</span> F</strong></p>";
-    html += "<p>Heating: <strong id='heatingStatus'>" + heatingStatus + "</strong></p>";  // Display heating status
-    html += "<p>Cooling: <strong id='coolingStatus'>" + coolingStatus + "</strong></p>";  // Display cooling status
-    html += "<p>Fan: <strong id='fanStatus'>" + fanStatus + "</strong></p>";              // Display fan status
-    html += "<p>Mode: <strong id='modeStatus'>" + (String((mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling")))) + "</strong></p>";
-    html += "<p><button onclick='increaseTemp()'>Temp +</button></p>";
-    html += "<p><button onclick='decreaseTemp()'>Temp -</button></p>";
-    html += "<p><button onclick='switchFan()'>Fan</button></p>";
-    html += "<p><button onclick='changeMode()'>Mode</button></p>";
-    html += "<p><button class='diff' onclick='restart()'>Restart Device</button></p>";
-    html += "<p><button class='diff' onclick='reset()'>Reset WiFi</button></p>";
-    html += "<style>";
-    html += "button { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 24px; width: 25vw; }";
-    html += "button.diff { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 10px; width: 13vw; }";
-    html += "</style>";
-    html += "<script>";                   // XML is hell
-    html += "function increaseTemp() {";  
-    html += "  var xhr = new XMLHttpRequest();";
-    html += "  xhr.open('GET', '/increase', true);";
-    html += "  xhr.send();";
-    html += "  xhr.onload = function () {";
-    html += "    if (xhr.status === 200) {";
-    html += "      var tempSetSpan = document.getElementById('tempSet');";
-    html += "      tempSetSpan.innerText = parseInt(tempSetSpan.innerText) + 1;";
-    html += "    }";
-    html += "  };";
-    html += "}";
-    html += "function decreaseTemp() {";
-    html += "  var xhr = new XMLHttpRequest();";
-    html += "  xhr.open('GET', '/decrease', true);";
-    html += "  xhr.send();";
-    html += "  xhr.onload = function () {";
-    html += "    if (xhr.status === 200) {";
-    html += "      var tempSetSpan = document.getElementById('tempSet');";
-    html += "      tempSetSpan.innerText = parseInt(tempSetSpan.innerText) - 1;";
-    html += "    }";
-    html += "  };";
-    html += "}";
-    html += "function switchFan() {";
-    html += "  var xhr = new XMLHttpRequest();";
-    html += "  xhr.open('GET', '/fanSwitch', true);";
-    html += "  xhr.send();";
-    html += "  xhr.onload = function () {";
-    html += "    if (xhr.status === 200) {";
-    html += "      var fanStatusVal = document.getElementById('fanStatus');";
-    html += "      fanStatusVal.innerText = (fanStatusVal.innerText === 'On') ? 'Off' : 'On';";
-    html += "    }";
-    html += "  };";
-    html += "}";
-    html += "function changeMode() {";
-    html += "  var xhr = new XMLHttpRequest();";
-    html += "  xhr.open('GET', '/changeMode', true);";
-    html += "  xhr.send();";
-    html += "  xhr.onload = function () {";
-    html += "    if (xhr.status === 200) {";
-    html += "      var modeStatus = document.getElementById('modeStatus');";
-    html += "      modeStatus.innerText = '" + (String((mode == 0 ? "Heating" : (mode == 1 ? "Cooling" : "Off")))) + "';";
-    html += "    }";
-    html += "  };";
-    html += "}";
-    html += "function restart() {";
-    html += "  var xhr = new XMLHttpRequest();";
-    html += "  xhr.open('GET', '/restart', true);";
-    html += "  xhr.send();";
-    html += "  xhr.onload = function () {";
-    html += "    if (xhr.status === 200) {";
-    html += "      alert('Device is restarting.');";
-    html += "    } else {";
-    html += "      alert('Failed to restart the device.');";
-    html += "    }";
-    html += "  };";
-    html += "}";
-    html += "function reset() {";
-    html += "  var xhr = new XMLHttpRequest();";
-    html += "  xhr.open('GET', '/reset', true);";
-    html += "  xhr.send();";
-    html += "  xhr.onload = function () {";
-    html += "    if (xhr.status === 200) {";
-    html += "      alert('Device is clearing WiFi Settings');";
-    html += "    } else {";
-    html += "      alert('Failed to reset.');";
-    html += "    }";
-    html += "  };";
-    html += "}";
-    html += "</script>";
-    html += "</body></html>";
+    
+    String html = R"webServe(
+    <html>
+    <body style='text-align: center;font-size: 24px;background-color: #000;color: #00FFD3;@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;900&display=swap');'>
+      <head>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <meta http-equiv='refresh' content='8'>
+      </head>
+      <h1 style='margin-top: -8px; color: #00FFD3;text-shadow: -3px 3px 5px #5C5C5C;'>EcoStat Control</h1>
+      <p>Current Temperature: <strong id='currentTemp'>)webServe" + String(temperatureF, 1) + R"webServe(F</strong></p>
+      <p>Target Temperature: <strong><span id='tempSet'>)webServe" + String(tempSet) + R"webServe(</span> F</strong></p>
+      <p>Heating: <strong id='heatingStatus'>)webServe" + heatingStatus + R"webServe(</strong></p>
+      <p>Cooling: <strong id='coolingStatus'>)webServe" + coolingStatus + R"webServe(</strong></p>
+      <p>Fan: <strong id='fanStatus'>)webServe" + fanStatus + R"webServe(</strong></p>
+      <p>Mode: <strong id='modeStatus'>)webServe" + (String((mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling")))) + R"webServe(</strong></p>
+      <p><button onclick='increaseTemp()'>Temp +</button></p>
+      <p><button onclick='decreaseTemp()'>Temp -</button></p>
+      <p><button onclick='switchFan()'>Fan</button></p>
+      <p><button onclick='changeMode()'>Mode</button></p>
+      <p><button class='diff' onclick='restart()'>Restart Device</button></p>
+      <p><button class='diff' onclick='reset()'>Reset WiFi</button></p>
+      <style>
+        button { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 24px; width: 25vw; }
+        button.diff { background-color: #222; color: #fff; border: 2px solid #444; border-radius: 20px; font-size: 10px; width: 13vw; }
+      </style>
+      <script>
+        function increaseTemp() {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', '/increase', true);
+          xhr.send();
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              var tempSetSpan = document.getElementById('tempSet');
+              tempSetSpan.innerText = parseInt(tempSetSpan.innerText) + 1;
+            }
+          };
+        }
+        function decreaseTemp() {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', '/decrease', true);
+          xhr.send();
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              var tempSetSpan = document.getElementById('tempSet');
+              tempSetSpan.innerText = parseInt(tempSetSpan.innerText) - 1;
+            }
+          };
+        }
+        function switchFan() {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', '/fanSwitch', true);
+          xhr.send();
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              var fanStatusVal = document.getElementById('fanStatus');
+              fanStatusVal.innerText = (fanStatusVal.innerText === 'On') ? 'Off' : 'On';
+            }
+          };
+        }
+        function changeMode() {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', '/changeMode', true);
+          xhr.send();
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              var modeStatus = document.getElementById('modeStatus');
+              modeStatus.innerText = 'webServe" + (String((mode == 0 ? "Heating" : (mode == 1 ? "Cooling" : "Off")))) + R"webServe(';
+            }
+          };
+        }
+        function restart() {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', '/restart', true);
+          xhr.send();
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              alert('Device is restarting.');
+            } else {
+              alert('Failed to restart the device.');
+            }
+          };
+        }
+        function reset() {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', '/reset', true);
+          xhr.send();
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              alert('Device is clearing WiFi Settings');
+            } else {
+              alert('Failed to reset.');
+            }
+          };
+        }
+      </script>
+    </body>
+    </html>
+    )webServe";
     request->send(200, "text/html", html);
   });
 
@@ -406,7 +410,7 @@ void loop() {
   int tempC = temperatureRead();           // read ESP32C3 device temperature for display later
   
 
-  // Read temperature and humidity and only execute this block every 3 seconds for DHT22 stability
+  // Read temperature and humidity
   if (millis() - lastDHTPollTime > dhtPollInterval) {
   float temperatureC = dht.readTemperature();
   float temperatureF = celsiusToFahrenheit(temperatureC);  // converts C to F and assigns it to temperatureF because 'Merica
@@ -489,9 +493,9 @@ void loop() {
     display.print(F("Error: Failure"));
     display.display();
     Serial.println(F("Sum Ting Wong"));
-    playTone(1000, 10000);
+    playTone(2000, 500);
   }
-  } // End of delayed DHT22 polling block
+  }
   if (tempSet != previousTempSet) {  
           Serial.print(F("Target Temperature: "));
           Serial.print(tempSet, 1);
