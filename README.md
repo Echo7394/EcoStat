@@ -19,7 +19,8 @@ So if you enjoy it, please consider buying me a coffee! <a href="https://cash.ap
 </p>
 <p float="left">
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/20231013_210953.jpg" width="200" />
-<img src="https://raw.githubusercontent.com/Echo7394/EcoStat/main/img/ESN1.jpg" width="200" />
+<img src="https://raw.githubusercontent.com/Echo7394/wiki-documents/docusaurus-version/docs/Contribution/Contributors/file_transfer_station/XIAO_ESP32C3_ESPHome_Smart_ThermoStat/10.jpg" width="200" />
+<img src="https://raw.githubusercontent.com/Echo7394/wiki-documents/docusaurus-version/docs/Contribution/Contributors/file_transfer_station/XIAO_ESP32C3_ESPHome_Smart_ThermoStat/9.jpg" width="200" />
 <img src="https://github.com/Echo7394/EcoStat/blob/main/img/3dfile.png" width="300" />
 </p>
 
