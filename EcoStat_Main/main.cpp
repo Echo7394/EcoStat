@@ -97,6 +97,7 @@ void displayFanStatus() {  // Gets flashed to the OLED whenever fanisOn changes
   display.display();
 }
 
+String modeStatus = "Off";
 int modeFan = 0;
 
 void switchFan() {
