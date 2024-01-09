@@ -251,6 +251,7 @@ void setup() {
     String coolingStatus = coolingOn ? "On" : "Off";  // yep
     
     String html = R"webServe(
+    <!doctype html>
     <html>
     <body style='text-align: center;font-size: 24px;background-color: #000;color: #00FFD3;@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;900&display=swap');'>
       <head>
@@ -263,7 +264,7 @@ void setup() {
       <p>Heating: <strong id='heatingStatus'>)webServe" + heatingStatus + R"webServe(</strong></p>
       <p>Cooling: <strong id='coolingStatus'>)webServe" + coolingStatus + R"webServe(</strong></p>
       <p>Fan: <strong id='fanStatus'>)webServe" + fanStatus + R"webServe(</strong></p>
-      <p>Mode: <strong id='modeStatus'>)webServe" + (String((mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling")))) + R"webServe(</strong></p>
+      <p>Mode: <strong id='modeStatus'>)webServe" + (mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling")) + R"webServe(</strong></p>
       <p><button onclick='increaseTemp()'>Temp +</button></p>
       <p><button onclick='decreaseTemp()'>Temp -</button></p>
       <p><button onclick='switchFan()'>Fan</button></p>
@@ -315,7 +316,7 @@ void setup() {
           xhr.onload = function () {
             if (xhr.status === 200) {
               var modeStatus = document.getElementById('modeStatus');
-              modeStatus.innerText = 'webServe" + (String((mode == 0 ? "Heating" : (mode == 1 ? "Cooling" : "Off")))) + R"webServe(';
+              modeStatus.innerText = xhr.responseText;  // Update the mode status based on the server's response
             }
           };
         }
@@ -373,12 +374,13 @@ void setup() {
   request->send(200, "text/plain", "Fan state switched.");
   });
   server.on("/changeMode", HTTP_GET, [](AsyncWebServerRequest *request) {
-    if (!request->authenticate(http_username, http_password)) {
-      return request->requestAuthentication();
-    }
-    changeMode();
-    request->send(200, "text/plain", "Mode switched.");
-    displayModeStatus(String((mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling"))));  // Update and display the new mode
+  if (!request->authenticate(http_username, http_password)) {
+    return request->requestAuthentication();
+  }
+  changeMode();
+  String modeString = (mode == 0 ? "Off" : (mode == 1 ? "Heating" : "Cooling"));
+  request->send(200, "text/plain", modeString);  // Send the current mode as the response
+  displayModeStatus(modeString);  // Update and display the new mode on the OLED
   });
   server.on("/restart", HTTP_GET, [](AsyncWebServerRequest *request) {
     if (!request->authenticate(http_username, http_password)) {
