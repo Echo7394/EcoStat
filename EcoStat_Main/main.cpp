@@ -450,6 +450,8 @@ void loop() {
 
     unsigned long lastFurnaceOffTime = 0;  // Store the last time the furnace was turned off
     unsigned long furnaceDelay = 120000;   // Delay before turning the furnace back on (120,000 ms = 120 seconds)
+    unsigned long lastCoolingOffTime = 0;
+    unsigned long coolingDelay = 120000;
 
     // Check if the mode status was updated
     if (millis() - modeStatusLastUpdated < 2000) {
@@ -473,17 +475,26 @@ void loop() {
       }
     } else if (mode == 2) {                // Cooling mode
       if (temperatureF > (tempSet + 3)) {  // Turns on cooling if the current sensor temp is 3 degrees more than the target temp
-        digitalWrite(RELAY_PIN0, HIGH);
-        coolingOn = true;
+        if (millis() - lastCoolingOffTime >= coolingDelay) {
+          digitalWrite(RELAY_PIN0, HIGH);
+          digitalWrite(RELAY_PIN1, HIGH);
+          fanisOn = true;
+          coolingOn = true;
+        }
       } else {
         if (temperatureF <= tempSet) {
           digitalWrite(RELAY_PIN0, LOW);
+          digitalWrite(RELAY_PIN1, LOW);
+          lastCoolingOffTime = millis();
+          fanisOn = false;
           coolingOn = false;
         }
       }
     } else if (mode == 0) {
       digitalWrite(RELAY_PIN0, LOW);
       coolingOn = false;
+      digitalWrite(RELAY_PIN1, LOW);
+      fanisOn = false;
       digitalWrite(RELAY_PIN, LOW);
       heatingOn = false;
     }
