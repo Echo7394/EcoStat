@@ -15,8 +15,6 @@ version of the project.**
 
 I put a lot of soul into this project, and more importantly the desire to keep it free, open source, and unintrusive.
 So if you enjoy it, please consider buying me a coffee! <a href="https://cash.app/$seripsirhc">**Donate :)**</a>
-If you dont feel like building one and just want to buy one ready to go, I do sell them on my Etsy Shop <a href="https://www.etsy.com/listing/1597013763/ecostat-smart-thermostat">**Buy an EcoStat**</a>
-But keep in mind, building these requires me to order parts and takes a fair bit of labor so I do charge a premium price for the formal product.
 
 </p>
 <p float="left">
